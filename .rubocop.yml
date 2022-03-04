@@ -5,6 +5,16 @@ inherit_gem:
   rubocop-jekyll: .rubocop.yml
 
 AllCops:
-  TargetRubyVersion: 2.4
   Exclude:
       - vendor/**/*
+  NewCops: enable
+  TargetRubyVersion: 2.5
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

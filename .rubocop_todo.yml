@@ -22,5 +22,8 @@ Metrics/BlockLength:
 # Offense count: 17
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
-Metrics/LineLength:
+Layout/LineLength:
   Max: 154
+
+Style/StringLiterals:
+  Enabled: false
