@@ -16,7 +16,7 @@ Style/PercentLiteralDelimiters:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/StringLiteral:
+Style/StringLiterals:
   Enabled: false
 
 Metrics/BlockLength:
