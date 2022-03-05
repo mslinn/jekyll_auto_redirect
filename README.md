@@ -1,5 +1,7 @@
 # Jekyll PageLookup Generator Plugin
 
+**Work in progress, not functional yet**
+
 *Jekyll plugin to silently generate a file containing original paths to published paths for your Jekyll site*
 
 [![Build Status](https://travis-ci.org/jekyll/jekyll_page_lookup.svg?branch=master)](https://travis-ci.org/jekyll/jekyll_page_lookup)
