@@ -11,7 +11,7 @@ module Jekyll
     # Main plugin action, called by Jekyll-core
     def generate(site)
       @site = site
-      @site.pages << page_lookup # unless file_exists?('_page_lookup.txt')
+      @site.pages << page_lookup unless file_exists?(page_lookup_txt)
       Jekyll.logger "#{@site.pages.length} pages were found."
     end
 
@@ -30,19 +30,18 @@ module Jekyll
     # We will strip all of this whitespace to minify the template
     MINIFY_REGEX = /!(?<=>\n|})\s+/.freeze
 
+    def page_lookup_txt
+      "#{@site.source}/_page_lookup.txt"
+    end
+
     # Array of all non-jekyll site files with an HTML extension
     def static_files
       @site.static_files.select { |file| INCLUDED_EXTENSIONS.include? file.extname }
     end
 
-    # Destination for _page_lookup.txt file within the site source directory
-    def destination_path(file = '_page_lookup.txt')
-      File.expand_path "../#{file}", __dir__
-    end
-
     def page_lookup
       output = PageWithoutAFile.new(@site, __dir__, '', '_page_lookup.txt')
-      output.content = File.read(destination_path).gsub(MINIFY_REGEX, '')
+      output.content = File.read(@site.source).gsub(MINIFY_REGEX, '')
       # output.data["layout"] = nil
       # output.data["static_files"] = static_files.map(&:to_liquid)
       output
