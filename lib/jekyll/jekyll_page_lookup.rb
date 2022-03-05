@@ -3,7 +3,7 @@
 require 'fileutils'
 
 module Jekyll
-  # Implementation
+  # Generates /_page_lookup.txt, which maps source paths to published URL paths
   class JekyllPageLookup < Jekyll::Generator
     safe true
     priority :lowest
@@ -11,12 +11,14 @@ module Jekyll
     # Main plugin action, called by Jekyll-core
     def generate(site)
       @site = site
-      @site.pages << page_lookup unless file_exists?('_page_lookup.txt')
+      @site.pages << page_lookup # unless file_exists?('_page_lookup.txt')
+      Jekyll.logger "#{@site.pages.length} pages were found."
     end
 
     private
 
     INCLUDED_EXTENSIONS = %w[
+      .md
       .htm
       .html
       .xhtml

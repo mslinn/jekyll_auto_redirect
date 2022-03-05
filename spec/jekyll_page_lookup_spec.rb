@@ -17,10 +17,11 @@ describe(Jekyll::JekyllPageLookup) do
   let(:config) do
     Jekyll.configuration(overrides)
   end
-  let(:site)     { Jekyll::Site.new(config) }
-  let(:contents) { File.read(dest_dir("_page_lookup.txt")) }
+  # puts "Running tests from #{Dir.pwd}"
+  let(:site) { Jekyll::Site.new(config) }
+  let(:contents) { File.read("_page_lookup.txt") }
   before(:each) do
-    site.process
+    site.process # Jekyll's entry point for reading, processing, and writing the Site to output.
   end
 
   it 'has no layout' do
