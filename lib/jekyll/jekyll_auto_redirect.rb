@@ -10,7 +10,7 @@ module Jekyll
 
     # Main plugin action, called by Jekyll-core
     def generate(site)
-      site.exclude << '_auto_redirect.txt'
+      site.exclude |= '_auto_redirect.txt'
       pages = assemble_pages(site)
       File.open(page_lookup_txt, 'w') do |file|
         pages.each do |page|
