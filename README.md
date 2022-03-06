@@ -8,7 +8,7 @@
 
 ## Usage
 
-1. Add `gem 'jekyll_auto_redirect'` to your site's `Gemfile` and run `bundle`.
+1. Add `gem 'jekyll_auto_redirect'` to your site's `Gemfile` and run `bundle install`.
 2. Add the following to your site's `_config.yml`:
 
 ```yml
@@ -16,8 +16,11 @@ plugins:
   - jekyll_auto_redirect
 ```
 
-💡 If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
-
+💡 If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`, like this:
+```yml
+gems:
+  - jekyll_auto_redirect
+```
 
 ## Note on Use with GitHub Pages Gem
 The GitHub Pages gem ignores all plugins included in the Gemfile.
@@ -28,6 +31,7 @@ When building a site that uses the GitHub Pages gem,
 follow the instructions above and ensure that `jekyll_auto_redirect` is listed in the `plugins` array in `_config.yml`.
 
 :warning: If you are using Jekyll < 3.5.0 use the `gems` key instead of `plugins`.
+
 
 ## Override default development settings
 
@@ -46,7 +50,7 @@ follow the instructions above and ensure that `jekyll_auto_redirect` is listed i
 ## Known Issues
 If the front matter in pages and posts does not get updated when a file is moved:
 1. Ensure `_config.yml` doesn't have `safe: true`. That prevents all plugins from working.
-2. Ensure that there is no sitemap generator plugin in the `_plugin` folder.
+2. Ensure that there is no `jekyll_auto_redirect.rb` plugin in the `_plugin` folder.
 
 ## Contributing
 
