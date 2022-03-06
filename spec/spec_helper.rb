@@ -2,7 +2,7 @@
 
 require 'jekyll'
 require 'fileutils'
-require File.expand_path('../lib/jekyll_page_lookup', __dir__)
+require File.expand_path('../lib/jekyll_auto_redirect', __dir__)
 
 Jekyll.logger.log_level = :error
 

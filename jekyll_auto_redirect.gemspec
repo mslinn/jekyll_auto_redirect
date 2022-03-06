@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll_page_lookup/version"
+require_relative "lib/jekyll_auto_redirect/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "jekyll_page_lookup"
-  spec.summary     = "Automatically generate a _page_lookup.txt for your Jekyll site."
+  spec.name        = "jekyll_auto_redirect"
+  spec.summary     = "Automatically generate HTTP 301 redirects for pages that move or are deleted on Jekyll site."
   spec.version     = Jekyll::PageLookup::VERSION
   spec.authors     = ["Mike Slinn"]
   spec.email       = "mslinn@mslinn.com"
-  spec.homepage    = "https://github.com/mslinn/jekyll_page_lookup"
+  spec.homepage    = "https://github.com/mslinn/jekyll_auto_redirect"
   spec.licenses    = ["MIT"]
 
   spec.files         = `git ls-files -z`.split("\x0")

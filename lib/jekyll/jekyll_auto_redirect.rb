@@ -3,8 +3,8 @@
 require 'fileutils'
 
 module Jekyll
-  # Generates /_page_lookup.txt, which maps source paths to published URL paths
-  class JekyllPageLookup < Jekyll::Generator
+  # Generates /_auto_redirect.txt, which maps source paths to published URL paths
+  class JekyllAutoRedirect < Jekyll::Generator
     safe true
     priority :lowest
 
@@ -46,11 +46,11 @@ module Jekyll
     end
 
     def page_lookup_txt
-      "#{@site.source}/_page_lookup.txt"
+      "#{@site.source}/_auto_redirect.txt"
     end
 
     def page_lookup
-      output = PageWithoutAFile.new(@site, @site.source, '', '_page_lookup.txt')
+      output = PageWithoutAFile.new(@site, @site.source, '', '_auto_redirect.txt')
       output.content = File.exist?(page_lookup_txt) ? File.read(page_lookup_txt) : ''
       output.data["layout"] = nil
       output.data["static_files"] = static_files.map(&:to_liquid)

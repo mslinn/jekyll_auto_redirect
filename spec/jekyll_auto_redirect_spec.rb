@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe(Jekyll::JekyllPageLookup) do
+describe(Jekyll::JekyllAutoRedirect) do
   let(:overrides) do
     {
       'source'      => source_dir,
@@ -19,7 +19,7 @@ describe(Jekyll::JekyllPageLookup) do
   end
   # puts "Running tests from #{Dir.pwd}"
   let(:site) { Jekyll::Site.new(config) }
-  let(:contents) { File.read("_page_lookup.txt") }
+  let(:contents) { File.read("_auto_redirect.txt") }
   before(:each) do
     site.process # Jekyll's entry point for reading, processing, and writing the Site to output.
   end
@@ -28,8 +28,8 @@ describe(Jekyll::JekyllPageLookup) do
     expect(contents).not_to match(%r!\ATHIS IS MY LAYOUT!)
   end
 
-  it 'creates a _page_lookup.txt file' do
-    expect(File.exist?(dest_dir('_page_lookup.txt'))).to be_truthy
+  it 'creates a _auto_redirect.txt file' do
+    expect(File.exist?(dest_dir('_auto_redirect.txt'))).to be_truthy
   end
 
   it "doesn't have multiple new lines or trailing whitespace" do
@@ -37,7 +37,7 @@ describe(Jekyll::JekyllPageLookup) do
     expect(contents).to_not match %r!\n{2,}!
   end
 
-  it 'puts all the pages in the _page_lookup.txt file' do
+  it 'puts all the pages in the _auto_redirect.txt file' do
     expect(contents).to match %r!<loc>http://example\.org/</loc>!
     expect(contents).to match %r!<loc>http://example\.org/some-subfolder/this-is-a-subpage\.html</loc>!
   end
@@ -46,18 +46,18 @@ describe(Jekyll::JekyllPageLookup) do
     expect(contents).to match %r!<loc>http://example\.org/some-subfolder/test_index\.html</loc>!
   end
 
-  it 'puts all the posts in the _page_lookup.txt file' do
+  it 'puts all the posts in the _auto_redirect.txt file' do
     expect(contents).to match %r!<loc>http://example\.org/2014/03/04/march-the-fourth\.html</loc>!
     expect(contents).to match %r!<loc>http://example\.org/2014/03/02/march-the-second\.html</loc>!
     expect(contents).to match %r!<loc>http://example\.org/2013/12/12/dec-the-second\.html</loc>!
   end
 
   describe 'collections' do
-    it 'puts all the `output:true` into _page_lookup.txt' do
+    it 'puts all the `output:true` into _auto_redirect.txt' do
       expect(contents).to match %r!<loc>http://example\.org/my_collection/test\.html</loc>!
     end
 
-    it "doesn't put all the `output:false` into _page_lookup.txt" do
+    it "doesn't put all the `output:false` into _auto_redirect.txt" do
       expect(contents).to_not match %r!<loc>http://example\.org/other_things/test2\.html</loc>!
     end
 
@@ -74,7 +74,7 @@ describe(Jekyll::JekyllPageLookup) do
     end
   end
 
-  it "puts all the static HTML files in the _page_lookup.txt file" do
+  it "puts all the static HTML files in the _auto_redirect.txt file" do
     expect(contents).to match %r!<loc>http://example\.org/some-subfolder/this-is-a-subfile\.html</loc>!
   end
 

@@ -53,4 +53,4 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
       - name: Test Gem Build
-        run:  bundle exec gem build jekyll_page_lookup.gemspec
+        run:  bundle exec gem build jekyll_auto_redirect.gemspec
