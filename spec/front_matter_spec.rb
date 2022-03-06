@@ -104,17 +104,13 @@ describe(Jekyll::FrontMatterEditor) do
       description: This is a description.
       last_modified_at: 2022-03-06
       layout: blog
-      title: "This is a title with 'apostrophes'"
+      title: This is a title
       auto_redirect_id: ABCDEF1234567890
       redirect_from:
         - /old/path/myPage.html
       ---
       <p>One upon a time...</p>
     END_OF_PAGE
-  end
-
-  before(:each) do
-    # Need to figure this out
   end
 
   it 'wags the dog' do
@@ -135,14 +131,14 @@ describe(Jekyll::FrontMatterEditor) do
 
   it 'it has auto_redirect_id and redirect' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_redirect_and_id)
-    expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
-    expect(front_matter_editor.front_matter).to include('redirect_from:')
+    expect(front_matter_editor.front_matter).to include(/auto_redirect_id:.*/)
+    expect(front_matter_editor.front_matter).to include(/redirect_from:.*/)
   end
 
   it 'inserts auto_redirect_id into virgin page' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
     front_matter_editor.insert(1, auto_redirect_id)
-    expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
+    expect(front_matter_editor.front_matter).to include(auto_redirect_id)
     expect(front_matter_editor.auto_redirect_id).to eq('ABCDEF1234567890')
   end
 

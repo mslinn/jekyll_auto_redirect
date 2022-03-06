@@ -15,13 +15,14 @@ module Jekyll
     # @param [string] path is relative path to page
     # @param [string] page_content is HTML content for that page
     def initialize(path, page_content)
+      @path = path
       @page_content_array = page_content.split("\n")
-      raise StandardError, "Page at #{path} is empty" unless @page_content_array.length.positive?
+      raise StandardError, "Page at #{@path} is empty" unless @page_content_array.length.positive?
 
-      raise StandardError, "Page at #{path} has no front matter" unless jekyll_page?
+      raise StandardError, "Page at #{@path} has no front matter" unless jekyll_page?
 
-      front_matter_end_index.positive
-      this
+      front_matter_end_index.positive?
+      self
     end
 
     def jekyll_page?
@@ -31,7 +32,7 @@ module Jekyll
     def front_matter_end_index
       end_index = Jekyll.tail(@page_content_array)
                         .find_index { |line| line.start_with?('---') }
-      raise StandardError, "Page at #{path} is missing second front matter delimiter" unless @front_matter_end_index
+      raise StandardError, "Page at #{@path} is missing second front matter delimiter" unless end_index
 
       end_index
     end
@@ -41,11 +42,11 @@ module Jekyll
     end
 
     def auto_redirect_id
-      line = @front_matter.find(x => x.startsWith('auto_redirect_id:'))
+      line = front_matter.find { |x| x.start_with?('auto_redirect_id:') }
       return line unless line
 
       lines = line.split(':')
-      return lines[1].trim if lines && len(lines) == 2
+      return lines[1].strip if lines && lines.length == 2
 
       raise StandardError("Page at #{path} has an auto_redirect_id entry in its front matter, but there is no value")
     end
@@ -70,7 +71,7 @@ module Jekyll
 
     # @return UUID
     def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
-      raise StandardError("Page at #{path} already has an auto_redirect_id entry in its front matter") if redirect_value_present
+      raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") if redirect_value_present
 
       insert(1, auto_redirect_id)
       auto_redirect_id
