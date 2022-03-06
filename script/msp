@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rake build && gem install jekyll_auto_redirect && (cd "$msp"; _bin/debug)
