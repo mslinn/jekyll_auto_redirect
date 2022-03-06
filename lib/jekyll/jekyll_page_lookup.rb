@@ -14,8 +14,8 @@ module Jekyll
       File.open(page_lookup_txt, 'w') do |file|
         pages.each do |page|
           # Jekyll.logger.info "#{page.name} path: #{page.relative_path} URL path: #{page.url}"
-          Jekyll.logger.info "#{page.name} is a #{type(page)}"
-          file.puts "#{page.relative_path} #{page.url}" if page.ext == '.html' && type(pages[0]) == Jekyll::StaticFile
+          # Jekyll.logger.info "#{page.basename} is a #{type(page)}"
+          file.puts "#{page.relative_path} #{page.url}"
         end
       end
     end
@@ -24,8 +24,13 @@ module Jekyll
 
     def interesting_page(page)
       ok = false
-      ok = page.html? if page.class.method_defined? :html?
+      if page.class.method_defined? :type
+        ok = (page.type == :posts or page.type == :pages)
+      elsif page.class.method_defined?(:html?)
+        ok = page.html?
+      end
       ok &&= page.base == @site.source if page.class.method_defined? :base
+      ok &&= !page.relative_path.start_with?('_drafts')
       ok
     end
 
@@ -37,8 +42,7 @@ module Jekyll
         interesting_files = docs.select { |doc| interesting_page doc }
         pages |= [interesting_files] unless interesting_files.empty?
       end
-      Jekyll.logger.info "#{pages.length} pages were found in #{@site.source}."
-      pages
+      pages.flatten
     end
 
     def page_lookup_txt
