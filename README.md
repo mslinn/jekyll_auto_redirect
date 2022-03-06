@@ -9,18 +9,19 @@
 ## Usage
 
 1. Add `gem 'jekyll_auto_redirect'` to your site's `Gemfile` and run `bundle install`.
-2. Add the following to your site's `_config.yml`:
+2. If you are using a Jekyll version greater than or equal to 3.5.0, add the following to your site's `_config.yml`:
 
-```yml
-plugins:
-  - jekyll_auto_redirect
-```
+    ```yml
+    plugins:
+      - jekyll_auto_redirect
+    ```
+   💡 Otherwise, if you are using a Jekyll version less than 3.5.0,
+   use the `gems` key instead of `plugins`, like this:
 
-💡 If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`, like this:
-```yml
-gems:
-  - jekyll_auto_redirect
-```
+    ```yml
+    gems:
+      - jekyll_auto_redirect
+    ```
 
 ## Note on Use with GitHub Pages Gem
 The GitHub Pages gem ignores all plugins included in the Gemfile.
