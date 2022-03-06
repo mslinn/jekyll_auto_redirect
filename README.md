@@ -15,7 +15,7 @@
     plugins:
       - jekyll_auto_redirect
     ```
-   💡 Otherwise, if you are using a Jekyll version less than 3.5.0,
+   Otherwise, if you are using a Jekyll version less than 3.5.0,
    use the `gems` key instead of `plugins`, like this:
 
     ```yml
@@ -30,9 +30,6 @@ This can be confusing because the official Jekyll docs state that plugins can be
 
 When building a site that uses the GitHub Pages gem,
 follow the instructions above and ensure that `jekyll_auto_redirect` is listed in the `plugins` array in `_config.yml`.
-
-:warning: If you are using Jekyll < 3.5.0 use the `gems` key instead of `plugins`.
-
 
 ## Override default development settings
 
