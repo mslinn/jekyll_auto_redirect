@@ -133,22 +133,30 @@ describe(Jekyll::FrontMatterEditor) do
     expect(front_matter_editor.front_matter).not_to include('redirect_from:')
   end
 
-  it 'it has id and redirect' do
+  it 'it has auto_redirect_id and redirect' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_redirect_and_id)
     expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
     expect(front_matter_editor.front_matter).to include('redirect_from:')
   end
 
-  it 'inserts id' do
+  it 'inserts auto_redirect_id into virgin page' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
-    front_matter_editor.insert(1, :auto_redirect_id)
+    front_matter_editor.insert(1, auto_redirect_id)
     expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
     expect(front_matter_editor.auto_redirect_id).to eq('ABCDEF1234567890')
   end
 
-  it 'detects invalid id' do
+  it 'refuses to insert an auto_redirect_id into a page that already has one' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_id_at_top)
+    expect { front_matter_editor.insert_auto_redirect_id('asdf') }.to raise_error StandardError
+
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_id_at_bottom)
+    expect { front_matter_editor.insert_auto_redirect_id('asdf') }.to raise_error StandardError
+  end
+
+  it 'detects invalid auto_redirect_id' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
-    front_matter_editor.insert(1, :auto_redirect_id_no_value)
-    expect { front_matter_editor.auto_redirect_id }.to raise_error
+    front_matter_editor.insert(1, auto_redirect_id_no_value)
+    expect { front_matter_editor.auto_redirect_id }.to raise_error StandardError
   end
 end

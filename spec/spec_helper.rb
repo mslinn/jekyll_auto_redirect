@@ -16,15 +16,15 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.order = 'random'
 
-  def source_dir(*files)
+  def self.source_dir(*files)
     File.join(SOURCE_DIR, *files)
   end
 
-  def dest_dir(*files)
+  def self.dest_dir(*files)
     File.join(DEST_DIR, *files)
   end
 
-  def robot_fixtures(*subdirs)
+  def self.robot_fixtures(*subdirs)
     File.join(ROBOT_FIXTURES, *subdirs)
   end
 

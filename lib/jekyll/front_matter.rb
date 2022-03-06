@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+
 # rubocop:disable Layout/MultilineMethodCallIndentation
 module Jekyll
   def self.tail(array)
@@ -9,8 +11,6 @@ module Jekyll
   # Does not treat front matter as YAML because that would rewrite it, and probably changing it visually.
   # Instead, parses front matter by brute force.
   class FrontMatterEditor
-    attr_reader :front_matter, :front_matter_end_index, :is_jekyll_page
-
     # Analyze front matter
     # @param [string] path is relative path to page
     # @param [string] page_content is HTML content for that page
@@ -18,15 +18,26 @@ module Jekyll
       @page_content_array = page_content.split("\n")
       raise StandardError, "Page at #{path} is empty" unless @page_content_array.length.positive?
 
-      @is_jekyll_page = @page_content_array[0].start_with?('---')
-      raise StandardError, "Page at #{path} has no front matter" unless @is_jekyll_page
+      raise StandardError, "Page at #{path} has no front matter" unless jekyll_page?
 
-      @front_matter_end_index =
-        Jekyll.tail(@page_content_array)
-              .find_index { |line| line.start_with?('---') }
+      front_matter_end_index.positive
+      this
+    end
+
+    def jekyll_page?
+      @page_content_array[0].start_with?('---')
+    end
+
+    def front_matter_end_index
+      end_index = Jekyll.tail(@page_content_array)
+                        .find_index { |line| line.start_with?('---') }
       raise StandardError, "Page at #{path} is missing second front matter delimiter" unless @front_matter_end_index
 
-      @front_matter = @page_content_array[1..@front_matter_end_index]
+      end_index
+    end
+
+    def front_matter
+      @page_content_array[1..@front_matter_end_index]
     end
 
     def auto_redirect_id
@@ -55,6 +66,14 @@ module Jekyll
         @page_content_array.insert(line_number, line)
         line_number += 1;
       end
+    end
+
+    # @return UUID
+    def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
+      raise StandardError("Page at #{path} already has an auto_redirect_id entry in its front matter") if redirect_value_present
+
+      insert(1, auto_redirect_id)
+      auto_redirect_id
     end
 
     def insert_redirect(file_name_relative)

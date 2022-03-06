@@ -19,13 +19,9 @@ describe(Jekyll::JekyllAutoRedirect) do
   end
   # puts "Running tests from #{Dir.pwd}"
   let(:site) { Jekyll::Site.new(config) }
-  let(:contents) { File.read("_auto_redirect.txt") }
+  let(:contents) { File.read('_auto_redirect.txt') }
   before(:each) do
     site.process # Jekyll's entry point for reading, processing, and writing the Site to output.
-  end
-
-  it 'has no layout' do
-    expect(contents).not_to match(%r!\ATHIS IS MY LAYOUT!)
   end
 
   it 'creates a _auto_redirect.txt file' do
