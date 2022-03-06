@@ -1,90 +1,154 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+fm_path = File.expand_path("../lib/jekyll/front_matter", __dir__)
+require fm_path
 
-describe(Jekyll::JekyllAutoRedirect) do
-  matter_virgin = <<-END_OF_FRONT_MATTER
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    END_OF_FRONT_MATTER
+describe(Jekyll::FrontMatterEditor) do
+  let(:full_redirect) { ['redirect_from:', '- /old/path/page1.html'] }
 
-  let(:matter_with_id_at_top) do
-    <<-END_OF_FRONT_MATTER
-    auto_redirect_id: ABCDEF1234567890
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    END_OF_FRONT_MATTER
+  let(:redirect_page_only) { '- /old/path/page2.html' }
+
+  let(:auto_redirect_id) { 'auto_redirect_id: ABCDEF1234567890' }
+  let(:auto_redirect_id_no_value) { 'auto_redirect_id:' }
+
+  let(:page_no_matter) do
+    <<~END_OF_PAGE
+      Blah blah blah.
+      Blah blah blah.
+      Blah.
+    END_OF_PAGE
   end
-  let(:matter_with_id_at_bottom) do
-    <<-END_OF_FRONT_MATTER
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    auto_redirect_id: ABCDEF1234567890
-    END_OF_FRONT_MATTER
+
+  let(:page_virgin) do
+    <<~END_OF_PAGE
+      ---
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
   end
-  let(:matter_with_redirect_at_top) do
-    <<-END_OF_FRONT_MATTER
-    redirect_from:
-      - /old/path/myPage.html
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    END_OF_FRONT_MATTER
+
+  let(:page_with_id_at_top) do
+    <<~END_OF_PAGE
+      ---
+      auto_redirect_id: ABCDEF1234567890
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
   end
-  let(:matter_with_redirect_at_bottom) do
-    <<-END_OF_FRONT_MATTER
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    redirect_from:
-      - /old/path/myPage.html
-    END_OF_FRONT_MATTER
+
+  let(:page_with_id_at_bottom) do
+    <<~END_OF_PAGE
+      ---
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      auto_redirect_id: ABCDEF1234567890
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
   end
-  let(:matter_with_redirect_and_id) do
-    <<-END_OF_FRONT_MATTER
-    categories: [ Ruby ]
-    date: 2022-03-06
-    description: This is a description.
-    last_modified_at: 2022-03-06
-    layout: blog
-    title: "This is a title with 'apostrophes'"
-    auto_redirect_id: ABCDEF1234567890
-    redirect_from:
-      - /old/path/myPage.html
-    END_OF_FRONT_MATTER
+
+  let(:page_with_redirect_at_top) do
+    <<~END_OF_PAGE
+      ---
+      redirect_from:
+        - /old/path/myPage.html
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
+  end
+
+  let(:page_with_redirect_at_bottom) do
+    <<~END_OF_PAGE
+      ---
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      redirect_from:
+        - /old/path/myPage.html
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
+  end
+
+  let(:page_with_redirect_and_id) do
+    <<~END_OF_PAGE
+      ---
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: "This is a title with 'apostrophes'"
+      auto_redirect_id: ABCDEF1234567890
+      redirect_from:
+        - /old/path/myPage.html
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
   end
 
   before(:each) do
     # Need to figure this out
   end
 
+  it 'wags the dog' do
+    array = [1, 2, 3, 4]
+    expect(Jekyll.tail(array)).to eq(array[1..-1])
+  end
+
+  it 'finds index' do
+    array = %w[Help I am trapped in this computer]
+    expect(array.find_index{ |line| line == 'trapped' }).to eq(3)
+  end
+
   it 'is virgin' do
-    contents = matter_virgin
-    expect(contents).not_to include('auto_redirect_id:')
-    expect(contents).not_to include('redirect_from:')
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
+    expect(front_matter_editor.front_matter).not_to include('auto_redirect_id:')
+    expect(front_matter_editor.front_matter).not_to include('redirect_from:')
   end
 
   it 'it has id and redirect' do
-    contents = matter_with_redirect_and_id
-    expect(contents).to include('auto_redirect_id:')
-    expect(contents).to include('redirect_from:')
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_redirect_and_id)
+    expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
+    expect(front_matter_editor.front_matter).to include('redirect_from:')
+  end
+
+  it 'inserts id' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
+    front_matter_editor.insert(1, :auto_redirect_id)
+    expect(front_matter_editor.front_matter).to include('auto_redirect_id:')
+    expect(front_matter_editor.auto_redirect_id).to eq('ABCDEF1234567890')
+  end
+
+  it 'detects invalid id' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
+    front_matter_editor.insert(1, :auto_redirect_id_no_value)
+    expect { front_matter_editor.auto_redirect_id }.to raise_error
   end
 end
