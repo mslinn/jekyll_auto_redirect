@@ -82,7 +82,7 @@ module Jekyll
       else
         next_line_number = next_redirect_index
         insert(next_line_number, 'redirect_from:') unless redirect_key_present
-        next_line_number += 1;
+        next_line_number += 1
         insert(next_line_number, "#{file_name_relative}\n")
       end
     end
@@ -112,6 +112,7 @@ module Jekyll
       end
       -1
     end
+    # rubocop:enable Metrics/BlockNesting, Metrics/PerceivedComplexity, Style/For, Metrics/MethodLength
 
     private
 
@@ -126,8 +127,8 @@ module Jekyll
       redirect_line = lines
                         .slice(0, front_matter_end)
                         .findIndex { |line| line.start_with? 'redirect_from:' }
-      if redirect_line>=0
-        for i in redirect_line + 1..front_matter_end do
+      if redirect_line >= 0
+        (redirect_line + 1..front_matter_end).each do |i|
           line = lines[i]
           return false unless line.start_with("  - ")
 

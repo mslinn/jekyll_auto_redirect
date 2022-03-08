@@ -120,7 +120,7 @@ describe(Jekyll::FrontMatterEditor) do
 
   it 'finds index' do
     array = %w[Help I am trapped in this computer]
-    expect(array.find_index{ |line| line == 'trapped' }).to eq(3)
+    expect(array.find_index { |line| line == 'trapped' }).to eq(3)
   end
 
   it 'is virgin' do
