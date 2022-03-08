@@ -7,6 +7,7 @@ inherit_gem:
 AllCops:
   Exclude:
       - vendor/**/*
+      - Gemfile*
   NewCops: enable
   TargetRubyVersion: 2.5
 

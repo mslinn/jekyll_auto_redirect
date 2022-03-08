@@ -16,8 +16,7 @@ Lint/Debugger:
 # ExcludedMethods: refine
 Metrics/BlockLength:
   Exclude:
-    - 'spec/jekyll_page_lookup_spec.rb'
-    - 'spec/test_jekyll-last-modified-at.rb'
+    - 'spec/front_matter_spec.rb'
 
 # Offense count: 17
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
