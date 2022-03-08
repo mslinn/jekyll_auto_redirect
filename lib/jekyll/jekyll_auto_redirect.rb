@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'jekyll/front_matter'
 
 module Jekyll
   # Generates /_auto_redirect.txt, which maps source paths to published URL paths
@@ -10,18 +11,33 @@ module Jekyll
 
     # Main plugin action, called by Jekyll-core
     def generate(site)
-      site.exclude |= '_auto_redirect.txt'
+      site.exclude |= ['_auto_redirect.txt']
       pages = assemble_pages(site)
       File.open(page_lookup_txt, 'w') do |file|
         pages.each do |page|
-          # Jekyll.logger.info "#{page.name} path: #{page.relative_path} URL path: #{page.url}"
-          # Jekyll.logger.info "#{page.basename} is a #{type(page)}"
-          file.puts "#{page.relative_path} #{page.url}"
+          if page.data.any? { |entry| entry =~ /^auto_redirect_id:.*/ }
+            handle_moved(file, page)
+          else
+            insert_redirect_id(file, page)
+          end
         end
       end
     end
 
     private
+
+    def handle_moved(file, page)
+      Jekyll.logger.info "TODO: write handle_moved"
+    end
+
+    def insert_redirect_id(file, page)
+      content = File.read(page.path)
+      front_matter_editor = Jekyll::FrontMatterEditor.new(page.path, content)
+      auto_redirect_id = front_matter_editor.insert_auto_redirect_id
+      file.puts "#{auto_redirect_id} #{page.url}"
+      page.data << ['auto_redirect_id:', auto_redirect_id]
+      Jekyll.logger.info "#{page.name}: added #{auto_redirect_id} for #{page.url}"
+    end
 
     def interesting_page(page)
       ok = false

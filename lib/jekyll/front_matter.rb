@@ -60,7 +60,7 @@ module Jekyll
     #
     # @param line_number [int] index of @page_content_array to start inserting at, origin 0
     # @param text [Array | string] content to be inserted
-    def insert(line_number, text)
+    def insert_into_front_matter(line_number, text)
       text = [text] unless text.is_a?(Array) # rubocop:disable Style/ArrayCoercion
       text.each do |line|
         @page_content_array.insert(line_number, line)
@@ -72,18 +72,18 @@ module Jekyll
     def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
       raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") if redirect_value_present
 
-      insert(1, auto_redirect_id)
+      insert_into_front_matter(1, auto_redirect_id)
       auto_redirect_id
     end
 
-    def insert_redirect(file_name_relative)
-      if redirect_value_present(file_name_relative)
-        Jekyll.logger.info "${file_name_relative} is already present in the list of redirect_from items"
+    def insert_redirect(id)
+      if redirect_value_present(id)
+        Jekyll.logger.info "ID ${id} is already present in the list of redirect_from items"
       else
         next_line_number = next_redirect_index
-        insert(next_line_number, 'redirect_from:') unless redirect_key_present
+        insert_into_front_matter(next_line_number, 'redirect_from:') unless redirect_key_present
         next_line_number += 1
-        insert(next_line_number, "#{file_name_relative}\n")
+        insert_into_front_matter(next_line_number, "#{file_name_relative}\n")
       end
     end
 
@@ -123,7 +123,7 @@ module Jekyll
       redirect_line > -1
     end
 
-    def redirect_value_present(lines, front_matter_end, file_name_relative)
+    def redirect_value_present(id)
       redirect_line = lines
                         .slice(0, front_matter_end)
                         .findIndex { |line| line.start_with? 'redirect_from:' }
@@ -132,8 +132,8 @@ module Jekyll
           line = lines[i]
           return false unless line.start_with("  - ")
 
-          file_name = line.replace('  - ', '')
-          return true if file_name == file_name_relative
+          line_id = line.replace('  - ', '')
+          return true if line_id == id
         end
       end
       false

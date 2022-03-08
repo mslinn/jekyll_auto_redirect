@@ -56,7 +56,13 @@ Jekyll can be configured to generate a [custom HTTP 404 page](https://jekyllrb.c
 
 ## Usage
 
-This plugin strives to work automatically, without the user having to do anything. The first time that Jekyll generates the website, after the plugin was installed, causes the plugin to insert a new entry into the front matter of every page and post. A file called `_auto_redirect.txt` is also created that contains a map of UUIDs to URL paths for every page and post. The entry contains a UUID. This allows pages and posts to be uniquely identified, and to track when pages are moved or renamed.
+This plugin strives to work automatically, without the user having to do anything. The first time that Jekyll generates the website, after the plugin was installed, causes the plugin to insert a new entry into the front matter of every page and post. The entry contains a unique ID for the page and looks like this:
+
+```yml
+auto_redirect_id: 43246cf2-5902-47de-8e44-a34ab05e8aeb
+```
+
+A file called `_auto_redirect.txt` is also created that contains a map of UUIDs to URL paths for every page and post. The entry contains a UUID. This allows pages and posts to be uniquely identified, and to track when pages are moved or renamed.
 
 
 ## Note on Use with GitHub Pages Gem
