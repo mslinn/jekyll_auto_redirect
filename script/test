@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
 
+export BUNDLE_WITH="development"
 bundle exec rspec "$@"
 bundle exec rspec spec/test_jekyll-last-modified-at.rb
