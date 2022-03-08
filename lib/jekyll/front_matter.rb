@@ -28,14 +28,16 @@ module Jekyll
       @page_content_array[0].start_with?('---')
     end
 
+    # @return index of last line before the 2nd --- (Origin 0)
     def front_matter_end_index
       end_index = Jekyll.tail(@page_content_array)
                         .find_index { |line| line.start_with?('---') }
-      raise StandardError, "Page at #{@path} is missing second front matter delimiter" unless end_index
+      raise StandardError, "Page at #{@path} is missing the second front matter delimiter" unless end_index
 
       end_index
     end
 
+    # @return array sliced from @page_content_array containing front matter, exclusive of bounding --- lines.
     def front_matter
       @page_content_array[1..front_matter_end_index]
     end
@@ -76,60 +78,45 @@ module Jekyll
       auto_redirect_id
     end
 
-    def insert_redirect(id)
+    def insert_redirect(id, previous_path)
       if redirect_value_present(id)
         Jekyll.logger.info "ID ${id} is already present in the list of redirect_from items"
       else
         next_line_number = next_redirect_index
         insert_into_front_matter(next_line_number, 'redirect_from:') unless redirect_key_present
-        next_line_number += 1
-        insert_into_front_matter(next_line_number, "#{file_name_relative}\n")
+        insert_into_front_matter(next_line_number + 1, "  - #{previous_path}")
       end
     end
 
-    # rubocop:disable Metrics/BlockNesting, Metrics/PerceivedComplexity, Style/For, Metrics/MethodLength
+    # @return index to insert next redirect at, in @page_content_array.
+    # If there is no redirect_from:, then return the index of the 2nd ---.
+    # else return the index of the next unindented line.
     def next_redirect_index
-      last_redirect_index = -1
-      processing_redirects = false
-      found_redirect_from = false
-      if front_matter_end >= 0
-        for i in 0..front_matter_end
-          if lines[i].start_with?('redirect_from:')
-            last_redirect_index = i
-            found_redirect_from = true
-            processing_redirects = true
-          elsif processing_redirects
-            if lines[i].start_with?('  - ')
-              last_redirect_index = i
-            else
-              processing_redirects = false
-            end
-          end
-        end
-        return front_matter_end + 1 unless found_redirect_from
+      index = front_matter.find_index { |line| line.start_with? 'redirect_from:' }
+      return front_matter_end_index + 1 if index.nil?
 
-        return last_redirect_index + 2
-      end
-      -1
+      next_key_index = front_matter[index..-1].find_index { |line| line.match(/^[[:alpha:]]+:/) }
+      return next_key_index unless next_key_index.nil?
+
+      front_matter_end_index
     end
-    # rubocop:enable Metrics/BlockNesting, Metrics/PerceivedComplexity, Style/For, Metrics/MethodLength
 
     private
 
     def redirect_key_present
-      redirect_line = lines
-                       .slice(0, front_matter_end)
-                       .findIndex { |line| line.start_with? 'redirect_from:' }
-      redirect_line > -1
+      redirect_line = @page_content_array
+                       .slice(0, front_matter_end_index)
+                       .find_index { |line| line.start_with? 'redirect_from:' }
+      !redirect_line.nil?
     end
 
     def redirect_value_present(id)
-      redirect_line = lines
-                        .slice(0, front_matter_end)
-                        .findIndex { |line| line.start_with? 'redirect_from:' }
-      if redirect_line >= 0
+      redirect_line = @page_content_array
+                        .slice(0, front_matter_end_index)
+                        .find_index { |line| line.start_with? 'redirect_from:' }
+      if redirect_line
         (redirect_line + 1..front_matter_end).each do |i|
-          line = lines[i]
+          line = @page_content_array[i]
           return false unless line.start_with("  - ")
 
           line_id = line.replace('  - ', '')

@@ -12,6 +12,16 @@ describe(Jekyll::FrontMatterEditor) do
   let(:auto_redirect_id) { 'auto_redirect_id: ABCDEF1234567890' }
   let(:auto_redirect_id_no_value) { 'auto_redirect_id:' }
 
+  let(:page_empty_matter) do
+    <<~END_OF_PAGE
+      ---
+      ---
+      Blah blah blah.
+      Blah blah blah.
+      Blah.
+    END_OF_PAGE
+  end
+
   let(:page_no_matter) do
     <<~END_OF_PAGE
       Blah blah blah.
@@ -123,10 +133,17 @@ describe(Jekyll::FrontMatterEditor) do
     expect(array.find_index { |line| line == 'trapped' }).to eq(3)
   end
 
+  it 'handles empty matter' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_empty_matter)
+    expect(front_matter_editor.front_matter_end_index).to eq(0)
+    expect(front_matter_editor.front_matter).to eq([])
+  end
+
   it 'is virgin' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
     expect(front_matter_editor.front_matter).not_to include('auto_redirect_id:')
     expect(front_matter_editor.front_matter).not_to include('redirect_from:')
+    expect(front_matter_editor.front_matter_end_index).to eq(6)
   end
 
   it 'it has auto_redirect_id and redirect' do
@@ -137,8 +154,18 @@ describe(Jekyll::FrontMatterEditor) do
 
   it 'inserts auto_redirect_id into virgin page' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
-    front_matter_editor.insert(1, auto_redirect_id)
+    front_matter_editor.insert_into_front_matter(1, auto_redirect_id)
+    # Jekyll.logger.info front_matter_editor.front_matter
+    expect(front_matter_editor.front_matter_end_index).to eq(7)
+
     expect(front_matter_editor.front_matter).to include(auto_redirect_id)
+    expect(front_matter_editor.auto_redirect_id).to eq('ABCDEF1234567890')
+  end
+
+  it 'variation inserts auto_redirect_id into virgin page' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
+    front_matter_editor.insert_redirect('ABCDEF1234567890', '/previous/path.html')
+    expect(front_matter_editor.front_matter).to include('  - /previous/path.html')
     expect(front_matter_editor.auto_redirect_id).to eq('ABCDEF1234567890')
   end
 
@@ -152,7 +179,7 @@ describe(Jekyll::FrontMatterEditor) do
 
   it 'detects invalid auto_redirect_id' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
-    front_matter_editor.insert(1, auto_redirect_id_no_value)
+    front_matter_editor.insert_into_front_matter(1, auto_redirect_id_no_value)
     expect { front_matter_editor.auto_redirect_id }.to raise_error StandardError
   end
 end
