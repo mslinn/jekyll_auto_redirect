@@ -22,7 +22,6 @@ module Jekyll
       raise StandardError, "Page at #{@path} has no front matter" unless jekyll_page?
 
       front_matter_end_index.positive?
-      self
     end
 
     def jekyll_page?
@@ -38,7 +37,7 @@ module Jekyll
     end
 
     def front_matter
-      @page_content_array[1..@front_matter_end_index]
+      @page_content_array[1..front_matter_end_index]
     end
 
     def auto_redirect_id
@@ -65,7 +64,7 @@ module Jekyll
       text = [text] unless text.is_a?(Array) # rubocop:disable Style/ArrayCoercion
       text.each do |line|
         @page_content_array.insert(line_number, line)
-        line_number += 1;
+        line_number += 1
       end
     end
 
