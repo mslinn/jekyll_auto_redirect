@@ -13,28 +13,41 @@ module Jekyll
     def generate(site)
       site.exclude |= ['_auto_redirect.txt']
       pages = assemble_pages(site)
-      File.open(page_lookup_txt, 'w') do |file|
-        pages.each do |page|
-          if page.data.any? { |entry| entry =~ /^auto_redirect_id:.*/ }
-            handle_moved(file, page)
-          else
-            insert_redirect_id(file, page)
-          end
-        end
+      @auto_redirect_array = auto_redirect_array
+      File.open(auto_redirect_txt, 'w') do |file|
+        pages.each { |page| generate_page(file, page) }
       end
+      # TODO process remaining items in @auto_redirect_array; they are deleted pages and posts
     end
 
     private
 
-    def handle_moved(file, page)
-      Jekyll.logger.info "TODO: write handle_moved"
+    def generate_page(file, page)
+      @content = File.read(page.path)
+      @front_matter_editor = Jekyll::FrontMatterEditor.new(page.path, @content)
+      auto_redirect_id = @front_matter_editor.auto_redirect_id
+      if auto_redirect_id
+        page_moved?(page) { |previous_path| @front_matter_editor.insert_redirect(previous_path) }
+        @auto_redirect_array.except! auto_redirect_id
+      else
+        insert_redirect_id page
+      end
+      file.puts "#{auto_redirect_id} #{page.url}"
     end
 
-    def insert_redirect_id(file, page)
-      content = File.read(page.path)
-      front_matter_editor = Jekyll::FrontMatterEditor.new(page.path, content)
-      auto_redirect_id = front_matter_editor.insert_auto_redirect_id
-      file.puts "#{auto_redirect_id} #{page.url}"
+    # @return the page's  old path if the page moved, otherwise return nil
+    def page_moved?(page)
+      id = @front_matter_editor.auto_redirect_id
+      old_path = @auto_redirect_array[id]
+      return old_path unless page.path == old_path
+
+      nil
+    rescue IndexError
+      raise IndexError, "Page #{id} was not found in #{auto_redirect_txt}"
+    end
+
+    def insert_redirect_id(page)
+      auto_redirect_id = @front_matter_editor.insert_auto_redirect_id
       page.data << ['auto_redirect_id:', auto_redirect_id]
       Jekyll.logger.info "#{page.name}: added #{auto_redirect_id} for #{page.url}"
     end
@@ -62,16 +75,14 @@ module Jekyll
       pages.flatten
     end
 
-    def page_lookup_txt
+    def auto_redirect_txt
       "#{@site.source}/_auto_redirect.txt"
     end
 
-    def page_lookup
-      output = PageWithoutAFile.new(@site, @site.source, '', '_auto_redirect.txt')
-      output.content = File.exist?(page_lookup_txt) ? File.read(page_lookup_txt) : ''
-      output.data["layout"] = nil
-      output.data["static_files"] = static_files.map(&:to_liquid)
-      output
+    def auto_redirect_array
+      return IO.readlines(auto_redirect_txt, chomp => true) if File.exist? auto_redirect_txt
+
+      []
     end
   end
 end

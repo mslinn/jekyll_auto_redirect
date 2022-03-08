@@ -49,7 +49,9 @@ module Jekyll
       lines = line.split(':')
       return lines[1].strip if lines && lines.length == 2
 
-      raise StandardError("Page at #{path} has an auto_redirect_id entry in its front matter, but there is no value")
+      raise StandardError("Page at #{path} has an auto_redirect_id entry in its front matter, but there is no value") if lines.length == 1
+
+      nil
     end
 
     # Insert one or more lines into front matter, for example:
@@ -78,14 +80,10 @@ module Jekyll
       auto_redirect_id
     end
 
-    def insert_redirect(id, previous_path)
-      if redirect_value_present(id)
-        Jekyll.logger.info "ID ${id} is already present in the list of redirect_from items"
-      else
-        next_line_number = next_redirect_index
-        insert_into_front_matter(next_line_number, 'redirect_from:') unless redirect_key_present
-        insert_into_front_matter(next_line_number + 1, "  - #{previous_path}")
-      end
+    def insert_redirect(previous_path)
+      next_line_number = next_redirect_index
+      insert_into_front_matter(next_line_number, 'redirect_from:') unless redirect_key_present
+      insert_into_front_matter(next_line_number + 1, "  - #{previous_path}")
     end
 
     # @return index to insert next redirect at, in @page_content_array.
