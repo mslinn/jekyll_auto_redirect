@@ -14,11 +14,12 @@ module Jekyll
     # Main plugin action, called by Jekyll-core
     def generate(site)
       auto_config = AutoConfig.new(site)
-      puts auto_config
+      return unless auto_config.enabled
+
       site.exclude |= ['_auto_redirect.txt']
       pages_and_posts = AutoSite.new(site).pages_and_posts
       File.open(auto_redirect_txt, 'w') do |file|
-        pages_and_posts.each { |page_or_post| PageOrPost.new(auto_site, page_or_post).generate_page(file) }
+        pages_and_posts.each { |page_or_post| PageOrPost.new(auto_config, auto_site, page_or_post).generate_page(file) }
       end
       # TODO process remaining items in @auto_redirects; they are deleted pages and posts
     end

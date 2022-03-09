@@ -6,7 +6,8 @@ module Jekyll
   class PageOrPost
     attr_reader :auto_redirect_id, :auto_site, :content, :front_matter_editor
 
-    def initialize(site, page)
+    def initialize(config, site, page)
+      @config = config
       @auto_site = AutoSite.new(site)
       @page = page
 
@@ -39,7 +40,7 @@ module Jekyll
     def insert_redirect_id
       auto_redirect_id = @front_matter_editor.insert_auto_redirect_id
       @page.data << ['auto_redirect_id:', auto_redirect_id]
-      Jekyll.logger.info "#{@page.name}: added #{auto_redirect_id} for #{@page.url}"
+      @config.info "#{@page.name}: added #{auto_redirect_id} for #{@page.url}"
     end
 
     private
