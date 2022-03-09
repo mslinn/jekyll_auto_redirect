@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'jekyll/auto_site'
+require 'jekyll/abcdef'
 require 'jekyll/page_or_post'
 
 module Jekyll
@@ -12,6 +13,8 @@ module Jekyll
 
     # Main plugin action, called by Jekyll-core
     def generate(site)
+      auto_config = AutoConfig.new(site)
+      puts auto_config
       site.exclude |= ['_auto_redirect.txt']
       pages_and_posts = AutoSite.new(site).pages_and_posts
       File.open(auto_redirect_txt, 'w') do |file|

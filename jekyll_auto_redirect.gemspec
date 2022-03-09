@@ -4,7 +4,7 @@ require_relative "lib/jekyll_auto_redirect/version"
 
 Gem::Specification.new do |spec|
   spec.name        = "jekyll_auto_redirect"
-  spec.summary     = "Automatically generate HTTP 301 redirects for pages that move or are deleted on Jekyll site."
+  spec.summary     = "Automatically generate HTTP 301 redirects for pages that are moved or deleted on Jekyll site."
   spec.version     = Jekyll::PageLookup::VERSION
   spec.authors     = ["Mike Slinn"]
   spec.email       = "mslinn@mslinn.com"

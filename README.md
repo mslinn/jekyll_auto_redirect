@@ -27,14 +27,14 @@
 
 ## Configuration
 
-You can add an `auto_redirect` key in `_config.yml` to control it.
-All implemented subkeys are shown below.
+You can add an `auto_redirect` key in `_config.yml` to control the plugin.
+All possible subkeys are shown below.
 
 ```yml
 auto_redirect:
   - enabled: true  # Default value
-  - dead_pages: [ _dead ]
-  - dead_posts: [ collections/_dead ]
+  - dead_page_dirs: [ _dead ]
+  - dead_post_dirs: [ collections/_dead ]
   - dead_urls: [
     - /blog/2013/2013-06-01-load-testing-scalacoursescom.html
     - /blog/2020/2020-08-16-new-jekyll-post.html
@@ -43,20 +43,20 @@ auto_redirect:
 ```
 All paths are assumed to be relative to the top-level directory, whether the paths start with a leading slash or not.
 
- * `enabled` controls whether the plugin is operational or not.
- * `verbose` controls informational output displayed on the console
+ * `enabled` controls whether the plugin will process pages and posts that have been moved or deleted.
+ * `verbose` controls informational output displayed on the console.
 
 
 ### HTTP 404
 Jekyll can be configured to generate a [custom HTTP 404 page](https://jekyllrb.com/tutorials/custom-404-page/). This plugin has subkeys to specify directories containing dead pages and posts, as well as URL paths which should resolve to HTTP 404.
- * `dead_pages`: array of directory names to scan for pages that should resolve to HTTP 404.
- * `dead_pages`: array of directory names to scan for pages that should resolve to HTTP 404.
+ * `dead_page_dirs`: array of directory names to scan for pages that should resolve to HTTP 404.
+ * `dead_post_dirs`: array of directory names to scan for posts that should resolve to HTTP 404.
 * `dead_urls`: array of URL paths that should resolve to HTTP 404.
 
 
 ## Usage
 
-This plugin strives to work automatically, without the user having to do anything. The first time that Jekyll generates the website, after the plugin was installed, causes the plugin to insert a new entry into the front matter of every page and post. The entry contains a unique ID for the page and looks like this:
+This plugin strives to work automatically, without the user having to do anything. Once the plugin is installed, each time Jekyll generates the website, the plugin will insert a new entry into the front matter of every page and post. The entry contains a unique ID (UUID) for the page and looks like this:
 
 ```yml
 auto_redirect_id: 43246cf2-5902-47de-8e44-a34ab05e8aeb
