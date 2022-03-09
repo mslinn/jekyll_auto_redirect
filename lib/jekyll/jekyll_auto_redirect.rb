@@ -26,7 +26,7 @@ module Jekyll
       File.open(@auto_site.auto_redirect_txt, 'w') do |file|
         pages_and_posts.each do |page_or_post|
           unless page_or_post.class.instance_methods.include? :path
-            puts "Oops: #{@page}"
+            puts "Oops, generate: #{@page}"
           end
           PageOrPost.new(@auto_config, @auto_site, page_or_post).generate_page(file)
         end

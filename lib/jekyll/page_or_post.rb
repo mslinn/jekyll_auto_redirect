@@ -29,7 +29,11 @@ module Jekyll
       else
         insert_redirect_id
       end
-      file.puts "#{@auto_redirect_id} #{@page.url}"
+      id = @page.data['auto_redirect_id:']
+      unless id
+        puts "generate_page did not get @auto_redirect_id"
+      end
+      file.puts "#{id} #{@page.url}"
     end
 
     # @return the page's old path if the page moved, otherwise return nil
@@ -46,7 +50,7 @@ module Jekyll
     def insert_redirect_id
       auto_redirect_id = @front_matter_editor.insert_auto_redirect_id
       @page.data['auto_redirect_id:'] = auto_redirect_id
-      @config.info "#{@page.name}: added #{auto_redirect_id} for #{@page.url}"
+      # TODO write modified page
     end
   end
 end
