@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'jekyll/auto_site'
-require 'jekyll/abcdef'
+require 'jekyll/auto_config'
 require 'jekyll/page_or_post'
 
 module Jekyll
