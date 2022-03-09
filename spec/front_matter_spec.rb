@@ -164,7 +164,7 @@ describe(Jekyll::FrontMatterEditor) do
 
   it 'variation inserts auto_redirect_id into virgin page' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
-    front_matter_editor.insert_redirect('ABCDEF1234567890', '/previous/path.html')
+    front_matter_editor.insert_redirect('/previous/path.html')
     expect(front_matter_editor.front_matter).to include('  - /previous/path.html')
   end
 
@@ -183,4 +183,8 @@ describe(Jekyll::FrontMatterEditor) do
     front_matter_editor.insert_into_front_matter(1, auto_redirect_id_no_value)
     expect { front_matter_editor.auto_redirect_id }.to raise_error StandardError
   end
+
+  # it 'detects a page being moved' do
+  #   front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_id_at_top)
+  # end
 end
