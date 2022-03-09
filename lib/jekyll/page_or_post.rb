@@ -4,19 +4,22 @@ require 'jekyll/front_matter'
 
 module Jekyll
   class PageOrPost
-    attr_reader :auto_redirect_id, :auto_site, :content, :front_matter_editor
+    attr_reader :auto_site, :content, :front_matter_editor
 
     def initialize(config, auto_site, page)
       @config = config
       @auto_site = auto_site
       @page = page
 
-      unless @page.class.respond_to? :path
+      unless @page.class.instance_methods.include? :path
         puts "Oops: #{@page}"
       end
       @content = File.read(@page.path)
       @front_matter_editor = Jekyll::FrontMatterEditor.new(@page.path, @content)
-      @auto_redirect_id = @front_matter_editor.auto_redirect_id
+    end
+
+    def auto_redirect_id
+      @front_matter_editor.auto_redirect_id
     end
 
     def generate_page(file)
@@ -26,11 +29,7 @@ module Jekyll
       else
         insert_redirect_id
       end
-      if @auto_redirect_id.empty?
-        puts "Error: No auto_redirect_id for #{@page.url}"
-      else
-        file.puts "#{@auto_redirect_id} #{@page.url}"
-      end
+      file.puts "#{@auto_redirect_id} #{@page.url}"
     end
 
     # @return the page's old path if the page moved, otherwise return nil

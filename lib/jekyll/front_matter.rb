@@ -74,7 +74,7 @@ module Jekyll
     # @return UUID
     def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
       raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") \
-        if redirect_id_present(auto_redirect_id)
+        if redirect_id_present
 
       insert_into_front_matter(1, auto_redirect_id)
       auto_redirect_id

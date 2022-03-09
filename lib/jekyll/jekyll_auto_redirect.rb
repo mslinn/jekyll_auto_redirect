@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+#require './warn'
 require 'jekyll/auto_site'
 require 'jekyll/auto_config'
 require 'jekyll/page_or_post'
@@ -24,6 +25,9 @@ module Jekyll
       @auto_site = AutoSite.new(@auto_config, @site)
       File.open(@auto_site.auto_redirect_txt, 'w') do |file|
         pages_and_posts.each do |page_or_post|
+          unless page_or_post.class.instance_methods.include? :path
+            puts "Oops: #{@page}"
+          end
           PageOrPost.new(@auto_config, @auto_site, page_or_post).generate_page(file)
         end
       end
@@ -34,14 +38,15 @@ module Jekyll
     end
 
     def self.interesting_page(page) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-      klass_methods = page.class.instance_methods
+      klass = page.class
+      klass_methods = klass.instance_methods
       has_url_and_path = klass_methods.include?(:url) and klass_methods.include?(:path)
       is_post = page.type == :posts if klass_methods.include? :type
       is_page = page.type == :pages if klass_methods.include? :type
-      is_redirects_json = page.name == 'redirects.json' && page.base.empty? if klass_methods.include? :base # Where does this file come from?
+      is_page_without_a_file = klass.name.split('::').last == 'PageWithoutAFile' # Where does this file come from?
 
       ok = has_url_and_path || is_post || is_page
-      ok &&= !is_redirects_json
+      ok &&= !is_page_without_a_file
       ok
     end
 
@@ -50,11 +55,11 @@ module Jekyll
     # @return array of pages and posts
     def pages_and_posts
       pages = @site.pages.select { |page| JekyllAutoRedirect.interesting_page page }
-      @site.collections.each do |collection|
-        docs = collection[1].docs
-        interesting_files = docs.select { |doc| JekyllAutoRedirect.interesting_page doc }
+      @site.collections.each_value do |collection|
+        interesting_files = collection.docs.select { |doc| JekyllAutoRedirect.interesting_page doc }
         pages |= interesting_files unless interesting_files.empty?
       end
+      pages
     end
   end
 end
