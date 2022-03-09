@@ -6,11 +6,14 @@ module Jekyll
   class PageOrPost
     attr_reader :auto_redirect_id, :auto_site, :content, :front_matter_editor
 
-    def initialize(config, site, page)
+    def initialize(config, auto_site, page)
       @config = config
-      @auto_site = AutoSite.new(site)
+      @auto_site = auto_site
       @page = page
 
+      unless @page.class.respond_to? :path
+        puts "Oops: #{@page}"
+      end
       @content = File.read(@page.path)
       @front_matter_editor = Jekyll::FrontMatterEditor.new(@page.path, @content)
       @auto_redirect_id = @front_matter_editor.auto_redirect_id
@@ -23,7 +26,11 @@ module Jekyll
       else
         insert_redirect_id
       end
-      file.puts "#{@auto_redirect_id} #{@page.url}"
+      if @auto_redirect_id.empty?
+        puts "Error: No auto_redirect_id for #{@page.url}"
+      else
+        file.puts "#{@auto_redirect_id} #{@page.url}"
+      end
     end
 
     # @return the page's old path if the page moved, otherwise return nil
@@ -39,22 +46,8 @@ module Jekyll
 
     def insert_redirect_id
       auto_redirect_id = @front_matter_editor.insert_auto_redirect_id
-      @page.data << ['auto_redirect_id:', auto_redirect_id]
+      @page.data['auto_redirect_id:'] = auto_redirect_id
       @config.info "#{@page.name}: added #{auto_redirect_id} for #{@page.url}"
-    end
-
-    private
-
-    def interesting_page
-      ok = false
-      if @page.class.method_defined? :type
-        ok = (@page.type == :posts or @page.type == :pages)
-      elsif @page.class.method_defined?(:html?)
-        ok = @page.html?
-      end
-      ok &&= @page.base == @auto_site.site.source if @page.class.method_defined? :base
-      ok &&= !@page.relative_path.start_with?('_drafts')
-      ok
     end
   end
 end

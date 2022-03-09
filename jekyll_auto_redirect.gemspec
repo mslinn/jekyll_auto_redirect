@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "debase"
   spec.add_development_dependency "rake"
-  # spec.add_development_dependency "reek"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop-jekyll", "~> 0.12.0"
   spec.add_development_dependency "rubocop-rake"

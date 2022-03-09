@@ -1,5 +1,7 @@
 #!/bin/bash
 
+gem uninstall jekyll_auto_redirect
+
 bundle exec rake build && \
 gem install pkg/jekyll_auto_redirect-0.1.0.gem &&
 (cd "$msp"; _bin/debug)

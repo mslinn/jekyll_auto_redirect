@@ -11,6 +11,12 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.5
 
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
 Style/PercentLiteralDelimiters:
   Enabled: false
 
@@ -18,7 +24,4 @@ Style/RegexpLiteral:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: false
-
-Metrics/BlockLength:
   Enabled: false

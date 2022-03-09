@@ -2,7 +2,6 @@
 
 require 'securerandom'
 
-# rubocop:disable Layout/MultilineMethodCallIndentation
 module Jekyll
   def self.tail(array)
     array.to_a[1..-1]
@@ -74,7 +73,8 @@ module Jekyll
 
     # @return UUID
     def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
-      raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") if redirect_value_present
+      raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") \
+        if redirect_id_present(auto_redirect_id)
 
       insert_into_front_matter(1, auto_redirect_id)
       auto_redirect_id
@@ -108,6 +108,13 @@ module Jekyll
       !redirect_line.nil?
     end
 
+    def redirect_id_present
+      redirect_id_line = @page_content_array
+                       .slice(0, front_matter_end_index)
+                       .find_index { |line| line.start_with? 'auto_redirect_id:' }
+      !redirect_id_line.nil?
+    end
+
     def redirect_value_present(id)
       redirect_line = @page_content_array
                         .slice(0, front_matter_end_index)
@@ -125,4 +132,3 @@ module Jekyll
     end
   end
 end
-# rubocop:enable Layout/MultilineMethodCallIndentation
