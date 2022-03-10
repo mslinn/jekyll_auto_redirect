@@ -2,9 +2,9 @@
 
 require 'jekyll'
 require 'fileutils'
-require File.expand_path('../lib/jekyll_auto_redirect', __dir__)
+require_relative '../lib/jekyll_auto_redirect'
 
-Jekyll.logger.log_level = :error
+Jekyll.logger.log_level = :info
 
 SOURCE_DIR = File.expand_path('fixtures', __dir__)
 DEST_DIR   = File.expand_path('dest', __dir__)

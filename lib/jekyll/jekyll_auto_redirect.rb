@@ -2,9 +2,9 @@
 
 require 'fileutils'
 #require './warn'
-require 'jekyll/auto_site'
-require 'jekyll/auto_config'
-require 'jekyll/page_or_post'
+require_relative './auto_site'
+require_relative './auto_config'
+require_relative './page_or_post'
 
 module Jekyll
   # Generates /_auto_redirect.txt, which maps source paths to published URL paths,
@@ -37,7 +37,7 @@ module Jekyll
       end
     end
 
-    def self.interesting_page(page) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    def self.interesting_page(page)
       klass = page.class
       klass_methods = klass.instance_methods
       has_url_and_path = klass_methods.include?(:url) and klass_methods.include?(:path)

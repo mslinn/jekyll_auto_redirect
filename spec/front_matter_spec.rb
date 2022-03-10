@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-fm_path = File.expand_path("../lib/jekyll/front_matter", __dir__)
-require fm_path
+# require 'spec_helper'
+require_relative "../lib/jekyll/front_matter"
 
 describe(Jekyll::FrontMatterEditor) do
+  let(:auto_redirect_txt) do
+    <<~END_OF_PAGE
+      ABCDEF1234567890 /old/path/page1.html
+    END_OF_PAGE
+  end
+
   let(:full_redirect) { ['redirect_from:', '- /old/path/page1.html'] }
 
   let(:redirect_page_only) { '- /old/path/page2.html' }
 
   let(:auto_redirect_id) { 'auto_redirect_id: ABCDEF1234567890' }
+
   let(:auto_redirect_id_no_value) { 'auto_redirect_id:' }
 
   let(:page_empty_matter) do
@@ -214,8 +220,4 @@ describe(Jekyll::FrontMatterEditor) do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_several_redirects_and_id)
     expect(front_matter_editor.redirect_values).to eq(['/old/path1/myPage.html', '/old/path2/myPage.html', '/old/path3/myPage.html'])
   end
-
-  # it 'detects a page being moved' do
-  #   front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_id_at_top)
-  # end
 end

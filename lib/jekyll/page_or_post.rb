@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/front_matter'
+require_relative './front_matter'
 
 module Jekyll
   class PageOrPost
@@ -24,9 +24,9 @@ module Jekyll
 
     def generate_page(file)
       if auto_redirect_id
-        page_moved? { |previous_path|
+        moved? do |previous_path|
           @front_matter_editor.insert_redirect(previous_path)
-        }
+        end
         # @redirect_array.except! auto_redirect_id
       else
         insert_redirect_id
@@ -42,7 +42,7 @@ module Jekyll
     end
 
     # @return the page's old path if the page moved, otherwise return nil
-    def page_moved?
+    def moved?
       id = @front_matter_editor.auto_redirect_id
       unless @front_matter_editor.redirect_values.include? @page.path
         old_path = @auto_site.redirects[id]

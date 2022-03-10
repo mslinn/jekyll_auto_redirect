@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll/front_matter'
+require_relative './front_matter'
 
 module Jekyll
   class AutoSite
