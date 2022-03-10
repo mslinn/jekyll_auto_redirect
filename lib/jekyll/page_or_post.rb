@@ -12,7 +12,7 @@ module Jekyll
       @page = page
 
       unless @page.class.instance_methods.include? :path
-        puts "Oops: #{@page}"
+        puts "Error: Jekyll::PageOrPosts.initialize did not find a :path for #{@page}"
       end
       @content = File.read(@page.path)
       @front_matter_editor = Jekyll::FrontMatterEditor.new(@page.path, @content)
@@ -28,12 +28,15 @@ module Jekyll
         @redirect_array.except! @auto_redirect_id
       else
         insert_redirect_id
+        write_modified_page
       end
+
       id = @page.data['auto_redirect_id:']
-      unless id
-        puts "generate_page did not get @auto_redirect_id"
+      if id
+        puts "Warning: Jekyll::PageOrPosts.generate_page did not obtain auto_redirect_id for #{@page.url}, this entry was not written to _auto_redirect.txt"
+      else
+        file.puts "#{id} #{@page.url}"
       end
-      file.puts "#{id} #{@page.url}"
     end
 
     # @return the page's old path if the page moved, otherwise return nil
@@ -44,13 +47,17 @@ module Jekyll
 
       nil
     rescue IndexError
-      raise IndexError, "Page #{id} was not found in #{@auto_site.auto_redirect_txt}"
+      raise IndexError, "Jekyll::PageOrPosts.page_moved did not find id {id} in #{@auto_site.auto_redirect_txt}"
     end
 
     def insert_redirect_id
       auto_redirect_id = @front_matter_editor.insert_auto_redirect_id
       @page.data['auto_redirect_id:'] = auto_redirect_id
-      # TODO write modified page
+    end
+
+    def write_modified_page
+      content = @front_matter_editor.page_content_array.join "\n"
+      File.write(path, content)
     end
   end
 end

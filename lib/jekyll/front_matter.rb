@@ -10,6 +10,8 @@ module Jekyll
   # Does not treat front matter as YAML because that would rewrite it, and probably changing it visually.
   # Instead, parses front matter by brute force.
   class FrontMatterEditor
+    attr_reader :page_content_array
+
     # Analyze front matter
     # @param [string] path is relative path to page
     # @param [string] page_content is HTML content for that page
