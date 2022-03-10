@@ -62,7 +62,7 @@ This plugin strives to work automatically, without the user having to do anythin
 auto_redirect_id: 43246cf2-5902-47de-8e44-a34ab05e8aeb
 ```
 
-A file called `_auto_redirect.txt` is also created that contains a map of UUIDs to URL paths for every page and post. The entry contains a UUID. This allows pages and posts to be uniquely identified, and to track when pages are moved or renamed.
+A file called `_auto_redirect.txt` is also created that contains a map of UUIDs to URL paths for every page and post. The UUIDs allow pages and posts to be uniquely identified, and to automatically generate page stubs containing HTTP 404 redirects when pages are moved or renamed.
 
 
 ## Note on Use with GitHub Pages Gem
