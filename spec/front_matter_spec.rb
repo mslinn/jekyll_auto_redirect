@@ -101,6 +101,7 @@ describe(Jekyll::FrontMatterEditor) do
       title: "This is a title with 'apostrophes'"
       redirect_from:
         - /old/path/myPage.html
+      auto_redirect_id: ABCDEF1234567890
       ---
       <p>One upon a time...</p>
     END_OF_PAGE
@@ -118,6 +119,25 @@ describe(Jekyll::FrontMatterEditor) do
       auto_redirect_id: ABCDEF1234567890
       redirect_from:
         - /old/path/myPage.html
+      ---
+      <p>One upon a time...</p>
+    END_OF_PAGE
+  end
+
+  let(:page_with_several_redirects_and_id) do
+    <<~END_OF_PAGE
+      ---
+      categories: [ Ruby ]
+      date: 2022-03-06
+      description: This is a description.
+      last_modified_at: 2022-03-06
+      layout: blog
+      title: This is a title
+      auto_redirect_id: ABCDEF1234567890
+      redirect_from:
+        - /old/path1/myPage.html
+        - /old/path2/myPage.html
+        - /old/path3/myPage.html
       ---
       <p>One upon a time...</p>
     END_OF_PAGE
@@ -175,13 +195,24 @@ describe(Jekyll::FrontMatterEditor) do
     expect { front_matter_editor.insert_auto_redirect_id('asdf') }.to raise_error StandardError
 
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_id_at_bottom)
-    expect { front_matter_editor.insert_auto_redirect_id('asdf') }.to raise_error StandardError
+    expect { front_matter_editor.insert_auto_redirect_id('qwer') }.to raise_error StandardError
   end
 
   it 'detects invalid auto_redirect_id' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
     front_matter_editor.insert_into_front_matter(1, auto_redirect_id_no_value)
     expect { front_matter_editor.auto_redirect_id }.to raise_error StandardError
+  end
+
+  it 'finds existing redirects' do
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
+    expect(front_matter_editor.redirect_values).to be_empty
+
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_redirect_and_id)
+    expect(front_matter_editor.redirect_values).to eq(['/old/path/myPage.html'])
+
+    front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_with_several_redirects_and_id)
+    expect(front_matter_editor.redirect_values).to eq(['/old/path1/myPage.html', '/old/path2/myPage.html', '/old/path3/myPage.html'])
   end
 
   # it 'detects a page being moved' do

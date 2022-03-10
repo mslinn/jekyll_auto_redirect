@@ -75,10 +75,10 @@ module Jekyll
 
     # @return UUID
     def insert_auto_redirect_id(auto_redirect_id = SecureRandom.uuid)
-      raise StandardError("Page at #{@path} already has an auto_redirect_id entry in its front matter") \
+      raise StandardError, "Page at #{@path} already has an auto_redirect_id entry in its front matter" \
         if redirect_id_present
 
-      insert_into_front_matter(1, auto_redirect_id)
+      insert_into_front_matter(1, "auto_redirect_id: #{auto_redirect_id}")
       auto_redirect_id
     end
 
@@ -101,6 +101,23 @@ module Jekyll
       front_matter_end_index
     end
 
+    def redirect_values
+      redirect_line = @page_content_array
+                        .slice(0, front_matter_end_index)
+                        .find_index { |line| line.start_with? 'redirect_from:' }
+      values = []
+      if redirect_line
+        (redirect_line + 1..front_matter_end_index).each do |i|
+          line = @page_content_array[i]
+          return values unless line.start_with?("  - ")
+
+          line.gsub!('  - ', '')
+          values |= [line]
+        end
+      end
+      values
+    end
+
     private
 
     def redirect_key_present
@@ -111,26 +128,9 @@ module Jekyll
     end
 
     def redirect_id_present
-      redirect_id_line = @page_content_array
-                       .slice(0, front_matter_end_index)
-                       .find_index { |line| line.start_with? 'auto_redirect_id:' }
+      redirect_id_line = @page_content_array[0..front_matter_end_index]
+                           .find_index { |line| line.start_with? 'auto_redirect_id:' }
       !redirect_id_line.nil?
-    end
-
-    def redirect_value_present(id)
-      redirect_line = @page_content_array
-                        .slice(0, front_matter_end_index)
-                        .find_index { |line| line.start_with? 'redirect_from:' }
-      if redirect_line
-        (redirect_line + 1..front_matter_end).each do |i|
-          line = @page_content_array[i]
-          return false unless line.start_with("  - ")
-
-          line_id = line.replace('  - ', '')
-          return true if line_id == id
-        end
-      end
-      false
     end
   end
 end
