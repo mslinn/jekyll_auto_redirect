@@ -52,6 +52,9 @@ RSpec.describe(Jekyll::JekyllAutoRedirect) do
     expect(page).not_to be_nil
     expect(auto_site).not_to be_nil
 
-    expect(page1.moved?).to eq false
+    expect(page1.moved?).to eq nil
+
+    allow(auto_site).to receive(:redirects) { { '012345' => 'new/path/to/page.html' } }
+    expect(page1.moved?).to eq 'new/path/to/page.html'
   end
 end
