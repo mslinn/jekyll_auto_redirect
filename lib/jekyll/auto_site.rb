@@ -16,9 +16,9 @@ module Jekyll
 
     # @return map of id => path
     def auto_redirects
-      return [] unless File.exist? @auto_redirect_txt
-
       hash = {}
+      return hash unless File.exist? @auto_redirect_txt
+
       IO.readlines(@auto_redirect_txt, :chomp => true).each do |line|
         hash.merge!(Hash[*line.split]) if line.include? ' '
       end

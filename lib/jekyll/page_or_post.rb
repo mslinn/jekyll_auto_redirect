@@ -46,9 +46,10 @@ module Jekyll
       id = @front_matter_editor.auto_redirect_id
       unless @front_matter_editor.redirect_values.include? @page.path
         old_path = @auto_site.redirects[id]
+        return false unless old_path
         return old_path unless @page.path == old_path
       end
-      nil
+      false
     end
 
     def insert_redirect_id
