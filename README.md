@@ -1,4 +1,6 @@
-# Jekyll AutoRedirect Generator Plugin
+Jekyll AutoRedirect Generator Plugin
+[![Gem Version](https://badge.fury.io/rb/jekyll_auto_redirect.svg)](https://badge.fury.io/rb/jekyll_auto_redirect)
+===========
 
 **Work in progress, not functional yet**
 
