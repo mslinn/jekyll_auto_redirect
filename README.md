@@ -6,7 +6,6 @@ Jekyll AutoRedirect Generator Plugin
 
 *Jekyll plugin to silently generate redirects for pages and posts when they are renamed or moved.*
 
-[![Build Status](https://travis-ci.org/jekyll/jekyll_auto_redirect.svg?branch=master)](https://travis-ci.org/jekyll/jekyll_auto_redirect)
 
 
 ## Installation
