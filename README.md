@@ -76,10 +76,33 @@ When building a site that uses the GitHub Pages gem,
 follow the instructions above and ensure that `jekyll_auto_redirect` is listed in the `plugins` array in `_config.yml`.
 
 
-## Override default development settings
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+Install development dependencies like this:
+```
+$ BUNDLE_WITH="development" bundle install
+```
+
+To install this gem onto your local machine, run:
+```shell
+$ bundle exec rake install
+```
+
+To release a new version, 
+  1. Update the version number in `version.rb`.
+  2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
+  3. Run the following:
+     ```shell
+     $ bundle exec rake release
+     ```
+     The above creates a git tag for the version, commits the created tag, 
+     and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
+
+### Override default development settings
 
 [Follow these instructions on Jekyll's documentation](https://jekyllrb.com/docs/usage/#override-default-development-settings).
-
 
 ## Developing locally
 
