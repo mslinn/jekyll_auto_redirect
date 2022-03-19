@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-#require './warn'
+# require './warn'
 require_relative './auto_site'
 require_relative './auto_config'
 require_relative './page_or_post'

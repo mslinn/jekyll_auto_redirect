@@ -78,7 +78,9 @@ follow the instructions above and ensure that `jekyll_auto_redirect` is listed i
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies.
+
+You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 Install development dependencies like this:
 ```
@@ -90,14 +92,14 @@ To install this gem onto your local machine, run:
 $ bundle exec rake install
 ```
 
-To release a new version, 
+To release a new version,
   1. Update the version number in `version.rb`.
   2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
   3. Run the following:
      ```shell
      $ bundle exec rake release
      ```
-     The above creates a git tag for the version, commits the created tag, 
+     The above creates a git tag for the version, commits the created tag,
      and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
 
 ### Override default development settings
@@ -128,3 +130,8 @@ If the front matter in pages and posts does not get updated when a file is moved
 2. Create a descriptively named feature branch
 3. Add your feature
 4. Submit a pull request
+
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
