@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require_relative "lib/jekyll_auto_redirect/version"
 
@@ -19,21 +20,22 @@ Gem::Specification.new do |spec|
 
   spec.post_install_message = <<~END_MESSAGE
 
-    Thanks for installing jekyll_auto_redirect!
+    Thanks for installing #{spec.name}!
 
   END_MESSAGE
 
-  spec.add_dependency 'jekyll', '>= 3.5.0'
-  spec.add_dependency 'jekyll_plugin_logger'
-  spec.add_dependency 'ruby-filemagic', '= 0.7.3'
-  spec.add_dependency 'rubyzip'
+  spec.add_dependency "jekyll", '>= 3.5.0'
+  spec.add_dependency "jekyll_plugin_logger"
+  spec.add_dependency "ruby-filemagic", "= 0.7.3"
+  spec.add_dependency "rubyzip"
 
   spec.add_development_dependency "bundler"
-  spec.add_development_dependency 'debase'
+  spec.add_development_dependency "debase"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency 'rubocop-jekyll'
-  spec.add_development_dependency 'rubocop-rake'
-  spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'ruby-debug-ide'
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-jekyll"
+  spec.add_development_dependency "rubocop-rake"
+  spec.add_development_dependency "rubocop-rspec"
+  spec.add_development_dependency "ruby-debug-ide"
 end

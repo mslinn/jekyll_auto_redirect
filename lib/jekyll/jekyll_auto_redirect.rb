@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-# require './warn'
+require "jekyll_plugin_logger"
 require_relative './auto_site'
 require_relative './auto_config'
 require_relative './page_or_post'
+require_relative './warn'
 
 module Jekyll
   # Generates /_auto_redirect.txt, which maps source paths to published URL paths,
@@ -62,4 +63,6 @@ module Jekyll
       pages
     end
   end
+
+  info { "Loaded jekyll_auto_redirect plugin." }
 end

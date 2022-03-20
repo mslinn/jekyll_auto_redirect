@@ -12,7 +12,7 @@ module Jekyll
       @page = page
 
       unless @page.class.instance_methods.include? :path
-        puts "Error: Jekyll::PageOrPosts.initialize did not find a :path for #{@page}"
+        error { "Error: Jekyll::PageOrPosts.initialize did not find a :path for #{@page}" }
       end
       @content = File.read(@page.path)
       @front_matter_editor = Jekyll::FrontMatterEditor.new(@page.path, @content)
@@ -37,7 +37,7 @@ module Jekyll
       if id
         file.puts "#{id} #{@page.url}"
       else
-        puts "Warning: Jekyll::PageOrPosts.generate_page did not obtain auto_redirect_id for #{@page.url}, this entry was not written to _auto_redirect.txt"
+        warn { "Warning: Jekyll::PageOrPosts.generate_page did not obtain auto_redirect_id for #{@page.url}, this entry was not written to _auto_redirect.txt" }
       end
     end
 

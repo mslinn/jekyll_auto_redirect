@@ -10,11 +10,6 @@ module Jekyll
       @dead_post_dirs = config['dead_post_dirs'] || []
       @dead_urls = config['dead_urls'] || []
       @enabled = config['enabled'] || true
-      @verbose = config['verbose'] || false
-    end
-
-    def info(msg)
-      Jekyll.logger.info(msg) if @verbose
     end
   end
 end

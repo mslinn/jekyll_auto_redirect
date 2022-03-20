@@ -41,7 +41,6 @@ auto_redirect:
     - /blog/2013/2013-06-01-load-testing-scalacoursescom.html
     - /blog/2020/2020-08-16-new-jekyll-post.html
   ]
-  - verbose: false  # Default value
 ```
 All paths are assumed to be relative to the top-level directory, whether the paths start with a leading slash or not.
 
@@ -87,11 +86,35 @@ Install development dependencies like this:
 $ BUNDLE_WITH="development" bundle install
 ```
 
-To install this gem onto your local machine, run:
+### Build and Install Locally
+To build and install this gem onto your local machine, run:
+```shell
+$ rake install:local
+```
+
+The following also does the same thing:
 ```shell
 $ bundle exec rake install
 ```
 
+Examine the newly built gem:
+```shell
+$ gem info jekyll_auto_redirect
+
+*** LOCAL GEMS ***
+
+jekyll_auto_redirect (1.0.0)
+    Author: Mike Slinn
+    Homepage:
+    https://github.com/mslinn/jekyll_auto_redirect
+    License: MIT
+    Installed at: /home/mslinn/.gems
+
+    Generates Jekyll logger with colored output.
+```
+
+
+### Build and Push to RubyGems
 To release a new version,
   1. Update the version number in `version.rb`.
   2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
