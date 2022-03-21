@@ -5,7 +5,12 @@ require "jekyll_plugin_logger"
 require_relative './auto_site'
 require_relative './auto_config'
 require_relative './page_or_post'
-require_relative './warn'
+require_relative '../warn'
+require_relative '../jekyll_auto_redirect/version'
+
+module JekyllAutoRedirectPluginName
+  PLUGIN_NAME = "jekyll_auto_redirect"
+end
 
 module Jekyll
   # Generates /_auto_redirect.txt, which maps source paths to published URL paths,
@@ -63,6 +68,6 @@ module Jekyll
       pages
     end
   end
-
-  info { "Loaded jekyll_auto_redirect plugin." }
 end
+
+Jekyll.info { "Loaded #{JekyllAutoRedirectPluginName::PLUGIN_NAME} v#{JekyllAutoRedirect::VERSION} plugin." }
