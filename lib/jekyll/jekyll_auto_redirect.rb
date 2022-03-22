@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'jekyll'
 require 'fileutils'
 require "jekyll_plugin_logger"
 require_relative './auto_site'
