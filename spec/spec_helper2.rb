@@ -4,7 +4,7 @@ require 'jekyll'
 require 'fileutils'
 require_relative '../lib/jekyll_auto_redirect'
 
-Jekyll.logger.log_level = :info
+$logger = PluginLogger.new(self)
 
 SOURCE_DIR = File.expand_path('fixtures', __dir__)
 DEST_DIR   = File.expand_path('dest', __dir__)
