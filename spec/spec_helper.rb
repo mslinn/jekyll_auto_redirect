@@ -2,6 +2,8 @@
 
 require 'jekyll'
 require 'fileutils'
+require "jekyll_plugin_logger"
+
 require_relative '../lib/jekyll_auto_redirect'
 
 $logger = PluginLogger.new(self)

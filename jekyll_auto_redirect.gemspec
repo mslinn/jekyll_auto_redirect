@@ -3,37 +3,42 @@
 require_relative "lib/jekyll_auto_redirect/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "jekyll_auto_redirect"
-  spec.summary     = "Automatically generate HTTP 301 redirects for pages that are moved or deleted on Jekyll site."
-  spec.version     = JekyllAutoRedirect::VERSION
-  spec.authors     = ["Mike Slinn"]
-  spec.email       = "mslinn@mslinn.com"
-  spec.homepage    = "https://github.com/mslinn/jekyll_auto_redirect"
-  spec.licenses    = ["MIT"]
+  github = "https://github.com/mslinn/jekyll_auto_redirect"
 
-  spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r!^bin/!) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r!^(test|spec|features)/!)
-  spec.require_paths = ["lib"]
-
-  spec.required_ruby_version = ">= 2.5.0"
-
+  spec.authors = ["Mike Slinn"]
+  spec.bindir = "exe"
+  spec.description = <<~END_OF_DESC
+    Automatically generate HTTP 301 redirects for pages that are moved or deleted on Jekyll site.
+  END_OF_DESC
+  spec.email = "mslinn@mslinn.com"
+  spec.files = Dir[".rubocop.yml", "LICENSE.*", "Rakefile", "{lib,spec}/**/*", "*.gemspec", "*.md"]
+  spec.homepage = github
+  spec.license = "MIT"
+  spec.metadata = {
+    "allowed_push_host" => "https://rubygems.org",
+    "bug_tracker_uri"   => "#{github}/issues",
+    "changelog_uri"     => "#{github}/CHANGELOG.md",
+    "homepage_uri"      => spec.homepage,
+    "source_code_uri"   => spec.homepage,
+  }
+  spec.name = "jekyll_auto_redirect"
   spec.post_install_message = <<~END_MESSAGE
 
     Thanks for installing #{spec.name}!
 
   END_MESSAGE
+  spec.require_paths = ["lib"]
+  spec.required_ruby_version = ">= 2.5.0"
+  spec.summary = "Automatically generate HTTP 301 redirects for pages that are moved or deleted on Jekyll site."
+  spec.test_files = spec.files.grep(%r!^(test|spec|features)/!)
+  spec.version = JekyllAutoRedirect::VERSION
 
   spec.add_dependency "jekyll", '>= 3.5.0'
   spec.add_dependency "jekyll_plugin_logger"
   spec.add_dependency "ruby-filemagic", "= 0.7.3"
   spec.add_dependency "rubyzip"
 
-  spec.add_development_dependency "bundler"
   spec.add_development_dependency "debase"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-jekyll"
   spec.add_development_dependency "rubocop-rake"
   spec.add_development_dependency "rubocop-rspec"
