@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# require 'spec_helper'
+require_relative 'spec_helper'
 require_relative "../lib/jekyll/front_matter"
 
 describe(Jekyll::FrontMatterEditor) do
@@ -181,7 +181,7 @@ describe(Jekyll::FrontMatterEditor) do
   it 'inserts auto_redirect_id into virgin page' do
     front_matter_editor = Jekyll::FrontMatterEditor.new('/bogus/path/', page_virgin)
     front_matter_editor.insert_into_front_matter(1, auto_redirect_id)
-    # Jekyll.logger.info front_matter_editor.front_matter
+    _logger.info front_matter_editor.front_matter
     expect(front_matter_editor.front_matter_end_index).to eq(7)
 
     expect(front_matter_editor.front_matter).to include(auto_redirect_id)

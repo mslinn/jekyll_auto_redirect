@@ -3,6 +3,7 @@
 require 'jekyll'
 require 'fileutils'
 require_relative "../lib/jekyll_auto_redirect"
+require_relative 'spec_helper'
 
 RSpec.describe(Jekyll::JekyllAutoRedirect) do
   let(:config) { instance_double("Configuration") }

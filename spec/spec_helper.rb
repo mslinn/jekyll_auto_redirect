@@ -6,14 +6,14 @@ require "jekyll_plugin_logger"
 
 require_relative '../lib/jekyll_auto_redirect'
 
-$logger = PluginLogger.new(self)
-
 SOURCE_DIR = File.expand_path('fixtures', __dir__)
 DEST_DIR   = File.expand_path('dest', __dir__)
 ROBOT_FIXTURES = File.expand_path('robot-fixtures', __dir__)
 ROBOT_FIXTURE_ITEMS = %w[_posts _layouts _config.yml index.html].freeze
 
 RSpec.configure do |config|
+  _logger = PluginLogger.new(self)
+
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
   config.order = 'random'
