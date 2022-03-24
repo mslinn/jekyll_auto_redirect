@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     "bug_tracker_uri"   => "#{github}/issues",
     "changelog_uri"     => "#{github}/CHANGELOG.md",
     "homepage_uri"      => spec.homepage,
-    "source_code_uri"   => spec.homepage,
+    "source_code_uri"   => github,
   }
   spec.name = "jekyll_auto_redirect"
   spec.post_install_message = <<~END_MESSAGE
