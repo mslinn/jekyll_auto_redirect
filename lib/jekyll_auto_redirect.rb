@@ -24,6 +24,8 @@ class JekyllAutoRedirect < Jekyll::Generator
     @auto_config = AutoConfig.new(site)
     return unless @auto_config.enabled
 
+    @logger = PluginMetaLogger.instance.new_logger(self)
+
     @site = site
     @site.exclude |= ['_auto_redirect.txt']
 
