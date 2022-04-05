@@ -70,4 +70,4 @@ class JekyllAutoRedirect < Jekyll::Generator
   end
 end
 
-PluginMetaLogger.instance.info { "Loaded #{JekyllAutoRedirectPluginName::PLUGIN_NAME} v#{JekyllAutoRedirect::VERSION} plugin." }
+PluginMetaLogger.instance.info { "Loaded #{JekyllAutoRedirectPluginName::PLUGIN_NAME} v#{JekyllAutoRedirectVersion::VERSION} plugin." }
