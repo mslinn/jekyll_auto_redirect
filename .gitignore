@@ -7,3 +7,4 @@ spec/dest
 spec/*fixtures/**/.jekyll-cache
 vendor/bundle
 Gemfile.lock
+spec/status_persistence.txt
