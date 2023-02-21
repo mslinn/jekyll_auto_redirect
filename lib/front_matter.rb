@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 require 'securerandom'
 
 # Does not treat front matter as YAML because that would rewrite it, and probably changing it visually.
 # Instead, parses front matter by brute force.
-class FrontMatterEditor
+class FrontMatterEditor # rubocop:disable Metrics/ClassLength
   attr_reader :page_content_array
 
   # Analyze front matter
@@ -21,7 +19,7 @@ class FrontMatterEditor
   end
 
   def self.tail(array)
-    array.to_a[1..-1]
+    array.to_a[1..]
   end
 
   def jekyll_page?
@@ -66,7 +64,7 @@ class FrontMatterEditor
   # @param line_number [int] index of @page_content_array to start inserting at, origin 0
   # @param text [Array | string] content to be inserted
   def insert_into_front_matter(line_number, text)
-    text = [text] unless text.is_a?(Array) # rubocop:disable Style/ArrayCoercion
+    text = [text] unless text.is_a?(Array)
     text.each do |line|
       @page_content_array.insert(line_number, line)
       line_number += 1
@@ -95,7 +93,7 @@ class FrontMatterEditor
     index = front_matter.find_index { |line| line.start_with? 'redirect_from:' }
     return front_matter_end_index + 1 if index.nil?
 
-    next_key_index = front_matter[index..-1].find_index { |line| line.match(/^[[:alpha:]]+:/) }
+    next_key_index = front_matter[index..].find_index { |line| line.match(/^[[:alpha:]]+:/) }
     return next_key_index unless next_key_index.nil?
 
     front_matter_end_index

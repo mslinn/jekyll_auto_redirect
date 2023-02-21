@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative './front_matter'
 
 class AutoSite
@@ -13,12 +11,12 @@ class AutoSite
     @pages = @site.pages
   end
 
-  # @return map of id => path
+  # @return map of id: path
   def auto_redirects
     hash = {}
     return hash unless File.exist? @auto_redirect_txt
 
-    IO.readlines(@auto_redirect_txt, :chomp => true).each do |line|
+    File.readlines(@auto_redirect_txt, chomp: true).each do |line|
       hash.merge!(Hash[*line.split]) if line.include? ' '
     end
   end

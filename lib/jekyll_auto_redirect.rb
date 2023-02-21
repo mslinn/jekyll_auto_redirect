@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 require 'fileutils'
-require "jekyll_plugin_logger"
+require 'jekyll_plugin_logger'
 require_relative './auto_site'
 require_relative './auto_config'
 require_relative './page_or_post'
@@ -9,7 +7,7 @@ require_relative '../warn'
 require_relative '../jekyll_auto_redirect/version'
 
 module JekyllAutoRedirectPluginName
-  PLUGIN_NAME = "jekyll_auto_redirect"
+  PLUGIN_NAME = 'jekyll_auto_redirect'.freeze
 end
 
 # Generates /_auto_redirect.txt, which maps source paths to published URL paths,
@@ -32,15 +30,13 @@ class JekyllAutoRedirect < Jekyll::Generator
     @auto_site = AutoSite.new(@auto_config, @site)
     File.open(@auto_site.auto_redirect_txt, 'w') do |file|
       pages_and_posts.each do |page_or_post|
-        unless page_or_post.class.instance_methods.include? :path
-          puts "Oops, generate: #{@page}"
-        end
+        puts "Oops, generate: #{@page}" unless page_or_post.class.instance_methods.include? :path
         PageOrPost.new(@auto_config, @auto_site, page_or_post).generate_page(file)
       end
     end
 
     @auto_site.redirects.each do |deleted_page_or_post|
-      # TODO issue 404 redirects for deleted pages and posts
+      # TODO: issue 404 redirects for deleted pages and posts
     end
   end
 

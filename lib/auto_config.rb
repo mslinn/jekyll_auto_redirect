@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AutoConfig
   attr_reader :dead_page_dirs, :dead_post_dirs, :dead_urls, :enabled, :verbose
 
