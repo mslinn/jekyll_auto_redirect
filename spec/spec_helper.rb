@@ -1,6 +1,6 @@
 require 'jekyll'
 require 'fileutils'
-require "jekyll_plugin_logger"
+require 'jekyll_plugin_logger'
 
 require_relative '../lib/jekyll_auto_redirect'
 
@@ -17,7 +17,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   # See https://relishapp.com/rspec/rspec-core/docs/command-line/only-failures
-  config.example_status_persistence_file_path = "spec/status_persistence.txt"
+  config.example_status_persistence_file_path = 'spec/status_persistence.txt'
 
   def self.source_dir(*files)
     File.join(SOURCE_DIR, *files)

@@ -30,7 +30,7 @@ class JekyllAutoRedirect < Jekyll::Generator
     @auto_site = AutoSite.new(@auto_config, @site)
     File.open(@auto_site.auto_redirect_txt, 'w') do |file|
       pages_and_posts.each do |page_or_post|
-        puts "Oops, generate: #{@page}" unless page_or_post.class.instance_methods.include? :path
+        @logger.debug { "Oops, generate: #{@page}" unless page_or_post.class.instance_methods.include? :path }
         PageOrPost.new(@auto_config, @auto_site, page_or_post).generate_page(file)
       end
     end

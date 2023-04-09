@@ -2,7 +2,7 @@ require 'securerandom'
 
 # Does not treat front matter as YAML because that would rewrite it, and probably changing it visually.
 # Instead, parses front matter by brute force.
-class FrontMatterEditor # rubocop:disable Metrics/ClassLength
+class FrontMatterEditor
   attr_reader :page_content_array
 
   # Analyze front matter
@@ -107,7 +107,7 @@ class FrontMatterEditor # rubocop:disable Metrics/ClassLength
     if redirect_line
       (redirect_line + 1..front_matter_end_index).each do |i|
         line = @page_content_array[i]
-        return values unless line.start_with?("  - ")
+        return values unless line.start_with?('  - ')
 
         line.gsub!('  - ', '')
         values |= [line]

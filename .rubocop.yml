@@ -1,12 +1,9 @@
 require:
-  # - rubocop-jekyll
   - rubocop-md
   - rubocop-performance
   - rubocop-rake
   - rubocop-rspec
-
-# inherit_gem:
-#   rubocop-jekyll: .rubocop.yml
+  # - rubocop-jekyll
 
 AllCops:
   Exclude:
@@ -25,15 +22,14 @@ Gemspec/RequireMFA:
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
-  Exclude:
-    - jekyll_auto_redirect.gemspec
-
-Layout/InitialIndentation:
-  Exclude:
-    - README.md
+  EnforcedHashRocketStyle: table
 
 Layout/LineLength:
   Max: 150
+
+Layout/CommentIndentation:
+  Exclude:
+    - spec/**/*
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
@@ -43,17 +39,11 @@ Lint/RedundantCopDisableDirective:
     - jekyll_auto_redirect.gemspec
 
 Metrics/AbcSize:
-  Max: 45
+  Max: 30
 
 Metrics/BlockLength:
   Exclude:
     - jekyll_auto_redirect.gemspec
-    - spec/**/*
-
-Metrics/ClassLength:
-  Exclude:
-    - spec/**/*
-  Max: 40
 
 Metrics/CyclomaticComplexity:
   Max: 20
@@ -61,45 +51,16 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 40
 
-Metrics/PerceivedComplexity:
-  Max: 15
-
-Naming/FileName:
-  Exclude:
-    - Rakefile
-
 RSpec/ExampleLength:
   Max: 20
 
 RSpec/MultipleExpectations:
   Max: 15
 
-Style/CommandLiteral:
-  Enabled: false
-
-Style/CommentedKeyword:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
-Style/RegexpLiteral:
-  Enabled: false
-
-Style/StringConcatenation:
-  Exclude:
-    - spec/**/*
-
-Style/StringLiterals:
-  Enabled: false
-
-Style/StringLiteralsInInterpolation:
   Enabled: false
 
 Style/TrailingCommaInHashLiteral:

@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-require_relative "../lib/jekyll/front_matter"
+require_relative '../lib/jekyll/front_matter'
 
 describe(Jekyll::FrontMatterEditor) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:auto_redirect_txt) do

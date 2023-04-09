@@ -1,6 +1,6 @@
 require_relative './front_matter'
 
-class PageOrPost # rubocop:disable Metrics/ClassLength
+class PageOrPost
   attr_reader :auto_site, :content, :front_matter_editor
 
   def initialize(config, auto_site, page)
@@ -36,7 +36,7 @@ class PageOrPost # rubocop:disable Metrics/ClassLength
     else
       @logger.warn do
         part1 = "Warning: Jekyll::PageOrPosts.generate_page did not obtain auto_redirect_id for #{@page.url}, "
-        part2 = "this entry was not written to _auto_redirect.txt"
+        part2 = 'this entry was not written to _auto_redirect.txt'
         "#{part1} #{part2}"
       end
     end

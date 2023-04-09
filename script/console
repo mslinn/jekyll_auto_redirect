@@ -31,4 +31,4 @@ def site(configuration = config)
   Jekyll::Site.new(configuration)
 end
 
-binding.pry
+binding.pry # rubocop:disable Lint/Debugger
