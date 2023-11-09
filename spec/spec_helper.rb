@@ -12,8 +12,7 @@ ROBOT_FIXTURE_ITEMS = %w[_posts _layouts _config.yml index.html].freeze
 RSpec.configure do |config|
   _logger = PluginLogger.new(self)
 
-  config.run_all_when_everything_filtered = true
-  config.filter_run :focus
+  config.filter_run_when_matching focus: true
   config.order = 'random'
 
   # See https://relishapp.com/rspec/rspec-core/docs/command-line/only-failures
