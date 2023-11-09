@@ -17,13 +17,13 @@
     },
     {
       "name": "RSpec - active spec file only",
-      "program": "binstub/rspec -I ${workspaceRoot} ${file}",
+      "program": "exe/rspec -I ${workspaceRoot} ${file}",
       "request": "launch",
       "type": "ruby_lsp",
     },
     {
       "name": "RSpec - all",
-      "program": "${workspaceRoot}/binstub/rspec -I ${workspaceRoot}",
+      "program": "${workspaceRoot}/exe/rspec -I ${workspaceRoot}",
       "request": "launch",
       "type": "ruby_lsp",
     }
