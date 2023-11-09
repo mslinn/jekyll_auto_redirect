@@ -1,10 +1,10 @@
 require 'fileutils'
 require 'jekyll_plugin_logger'
-require_relative './auto_site'
-require_relative './auto_config'
-require_relative './page_or_post'
-require_relative '../warn'
-require_relative '../jekyll_auto_redirect/version'
+require_relative 'auto_site'
+require_relative 'auto_config'
+require_relative 'page_or_post'
+require_relative 'warn'
+require_relative 'jekyll_auto_redirect/version'
 
 module JekyllAutoRedirectPluginName
   PLUGIN_NAME = 'jekyll_auto_redirect'.freeze
@@ -22,7 +22,7 @@ class JekyllAutoRedirect < Jekyll::Generator
     @auto_config = AutoConfig.new(site)
     return unless @auto_config.enabled
 
-    @logger = PluginMetaLogger.instance.new_logger(self)
+    @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
     @site = site
     @site.exclude |= ['_auto_redirect.txt']

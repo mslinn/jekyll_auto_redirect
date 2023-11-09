@@ -1,13 +1,14 @@
-require 'jekyll'
 require 'fileutils'
-require_relative '../lib/jekyll_auto_redirect'
-require_relative 'spec_helper'
+require 'jekyll'
+require_relative '../../lib/jekyll_auto_redirect'
+require_relative '../../lib/page_or_post'
+require_relative '../spec_helper'
 
-RSpec.describe(Jekyll::JekyllAutoRedirect) do
-  let(:config) { instance_double(Configuration) }
+RSpec.describe(JekyllAutoRedirect) do
+  let(:config) { instance_double(Jekyll::Configuration) }
 
   let(:site) do
-    site_ = instance_double(Site)
+    site_ = instance_double(Jekyll::Site)
     allow(site_).to receive(:source) { Dir.pwd }
     allow(site_).to receive(:config) { config }
     allow(site_).to receive(:pages) { [page1] }
@@ -27,8 +28,9 @@ RSpec.describe(Jekyll::JekyllAutoRedirect) do
   end
 
   let(:page) do
-    page_ = instance_double(Page)
+    page_ = instance_double(Jekyll::Page)
     allow(page_).to receive(:path).and_return 'spec/fixtures/test_moved.html'
+    allow(page_).to receive(:moved?).and_return True
     allow(page_).to receive(:data).and_return(
       {
         auto_redirect_id: '012345',
@@ -39,7 +41,7 @@ RSpec.describe(Jekyll::JekyllAutoRedirect) do
   end
 
   let(:page1) do
-    Jekyll::PageOrPost.new(config, auto_site, page)
+    PageOrPost.new(config, auto_site, page)
   end
 
   it 'exercises mocks' do

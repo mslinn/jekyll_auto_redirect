@@ -1,7 +1,8 @@
-require_relative 'spec_helper'
-require_relative '../lib/jekyll/front_matter'
+require 'jekyll'
+require_relative '../spec_helper'
+require_relative '../../lib/front_matter'
 
-describe(Jekyll::FrontMatterEditor) do # rubocop:disable RSpec/MultipleMemoizedHelpers
+describe(FrontMatterEditor) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:auto_redirect_txt) do
     <<~END_OF_PAGE
       ABCDEF1234567890 /old/path/page1.html
@@ -149,7 +150,7 @@ describe(Jekyll::FrontMatterEditor) do # rubocop:disable RSpec/MultipleMemoizedH
 
   it 'wags the dog' do
     array = [1, 2, 3, 4]
-    expect(Jekyll.tail(array)).to eq(array[1..])
+    expect(tail(array)).to eq(array[1..])
   end
 
   it 'finds index' do

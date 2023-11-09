@@ -1,12 +1,11 @@
 .bundle
 .jekyll-cache/
-.jekyll-metadata
 _site/
 exe/
+.jekyll-metadata
 *.gem
 Gemfile.lock
 spec/dest
 spec/*fixtures/**/.jekyll-cache
 vendor/bundle
-Gemfile.lock
 spec/status_persistence.txt

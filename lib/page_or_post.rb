@@ -1,10 +1,10 @@
-require_relative './front_matter'
+require_relative 'front_matter'
 
 class PageOrPost
   attr_reader :auto_site, :content, :front_matter_editor
 
   def initialize(config, auto_site, page)
-    @logger = PluginMetaLogger.new_logger(self)
+    @logger = PluginMetaLogger.instance.new_logger(self)
     @config = config
     @auto_site = auto_site
     @page = page
@@ -12,7 +12,7 @@ class PageOrPost
     @logger.error { "Error: Jekyll::PageOrPosts.initialize did not find a :path for #{@page}" } \
       unless @page.class.instance_methods.include? :path
     @content = File.read(@page.path)
-    @front_matter_editor = Jekyll::FrontMatterEditor.new(@page.path, @content)
+    @front_matter_editor = FrontMatterEditor.new(@page.path, @content)
   end
 
   def auto_redirect_id

@@ -2,8 +2,8 @@
 
 require 'bundler/setup'
 require 'fileutils'
+require 'jekyll'
+require_relative '../lib/jekyll_auto_redirect'
 require 'irb'
-require 'jekyll_auto_redirect'
-require 'liquid'
 
 IRB.start(__FILE__)

@@ -28,7 +28,7 @@ class FrontMatterEditor
 
   # @return index of last line before the 2nd --- (Origin 0)
   def front_matter_end_index
-    end_index = Jekyll.tail(@page_content_array)
+    end_index = tail(@page_content_array)
                       .find_index { |line| line.start_with?('---') }
     raise StandardError, "Page at #{@path} is missing the second front matter delimiter" unless end_index
 
