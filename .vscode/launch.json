@@ -16,16 +16,29 @@
       "type": "ruby_lsp",
     },
     {
-      "name": "RSpec - active spec file only",
-      "program": "exe/rspec -I ${workspaceRoot} ${file}",
+      "args": [
+        "-I",
+        "${workspaceRoot}"
+      ],
+      "debugPort": "0",
+      "name": "RSpec - all",
       "request": "launch",
-      "type": "ruby_lsp",
+      "script": "${workspaceRoot}/binstub/rspec",
+      "type": "rdbg",
+      "useBundler": true,
     },
     {
-      "name": "RSpec - all",
-      "program": "${workspaceRoot}/exe/rspec -I ${workspaceRoot}",
+      "args": [
+        "-I",
+        "${workspaceRoot}",
+        "${file}"
+      ],
+      "debugPort": "0",
+      "name": "RSpec - active spec file only",
       "request": "launch",
-      "type": "ruby_lsp",
+      "script": "${workspaceRoot}/binstub/rspec",
+      "type": "rdbg",
+      "useBundler": true,
     }
   ]
 }

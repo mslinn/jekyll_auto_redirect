@@ -8,7 +8,7 @@ require:
 AllCops:
   Exclude:
     - demo/_site/**/*
-    - exe/**/*
+    - binstub/**/*
     - vendor/**/*
     - Gemfile*
   NewCops: enable
