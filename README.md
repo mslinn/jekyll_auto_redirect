@@ -104,12 +104,6 @@ $ BUNDLE_WITH="development" bundle install
 To build and install this gem onto your local machine, run:
 
 ```shell
-$ rake install:local
-```
-
-The following also does the same thing:
-
-```shell
 $ bundle exec rake install
 ```
 
