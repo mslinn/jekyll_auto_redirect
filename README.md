@@ -107,7 +107,7 @@ To build and install this gem onto your local machine, run:
 $ bundle exec rake install
 ```
 
-Examine the newly built gem:
+examine the newly built gem:
 
 ```shell
 $ gem info jekyll_auto_redirect
